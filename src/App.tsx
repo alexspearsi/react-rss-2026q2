@@ -5,11 +5,14 @@ import ArticleCard from './components/card/ArticleCard';
 class App extends Component {
   state = {
     data: [] as Article[],
+    query: '',
     loading: true,
   };
 
   componentDidMount(): void {
-    fetch('https://api.spaceflightnewsapi.net/v4/articles')
+    fetch(
+      `https://api.spaceflightnewsapi.net/v4/articles/?search=${this.state.query}`
+    )
       .then((res) => res.json())
       .then((data: ArticlesResponse) => {
         this.setState({
@@ -23,28 +26,53 @@ class App extends Component {
       });
   }
 
+  inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ query: e.target.value });
+  };
+
+  searchHandler = () => {
+    this.setState({ loading: true });
+
+    const url = this.state.query
+      ? `https://api.spaceflightnewsapi.net/v4/articles?search=${encodeURIComponent(this.state.query)}`
+      : 'https://api.spaceflightnewsapi.net/v4/articles';
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data: ArticlesResponse) => {
+        this.setState({ data: data.results, loading: false });
+      });
+  };
+
   render() {
     const { data, loading } = this.state;
 
     console.log(data);
 
     return (
-      <div>
+      <>
         <header>
-          <input type="text"></input>
-          <input type="submit"></input>
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={this.state.query}
+            onChange={this.inputHandler}
+          />
+          <input type="submit" value="Search" onClick={this.searchHandler} />
         </header>
 
-        {!loading ? (
-          <div className="list">
-            {this.state.data.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
-        ) : (
-          'Loading...'
-        )}
-      </div>
+        <main>
+          {!loading ? (
+            <div className="list">
+              {this.state.data.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </div>
+          ) : (
+            'Loading...'
+          )}
+        </main>
+      </>
     );
   }
 }

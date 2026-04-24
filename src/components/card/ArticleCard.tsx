@@ -1,6 +1,5 @@
 import type { Article } from '../../types/article';
-import './Card.css';
-
+import styles from './ArticleCard.module.css';
 interface Props {
   article: Article;
 }
@@ -19,21 +18,23 @@ export default function ArticleCard({ article }: Props) {
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="card"
+      className={styles.card}
     >
       <img
         src={article.image_url}
         alt={article.title}
-        className="card__image"
+        className={styles.image}
       />
 
-      <div className="card__body">
-        <div className="card__header">
-          <span className="card__site">{article.news_site}</span>
-          <span className="card__date">{formatDate(article.published_at)}</span>
+      <div className={styles.body}>
+        <div className={styles.header}>
+          <span className={styles.site}>{article.news_site}</span>
+          <span className={styles.date}>
+            {formatDate(article.published_at)}
+          </span>
         </div>
 
-        <h3 className="card__title">{article.title}</h3>
+        <h3 className={styles.title}>{article.title}</h3>
       </div>
     </a>
   );
