@@ -8,7 +8,7 @@ export async function fetchArticles(query: string) {
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error('Failed to get articles');
+    throw new Error(`Error: ${res.status}`);
   }
 
   return res.json();

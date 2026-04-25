@@ -28,44 +28,19 @@ header {
   margin-bottom: 8px;
 }
 
-header form {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-}
-
-header input[type='text'] {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.error {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
   border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
-  padding: 8px 14px;
-  outline: none;
-  transition: border-color 0.2s;
+  padding: 12px 16px;
+  margin-top: 16px;
 }
 
-header input[type='text']:focus {
-  border-color: #e8c84a;
-}
-
-header input[type='text']::placeholder {
-  color: rgba(255, 255, 255, 0.3);
-}
-
-header button {
-  background: #e8c84a;
-  border: none;
+.loading {
+  text-align: center;
+  color: #e8c84a;
   border-radius: 8px;
-  color: #1a1a1a;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 18px;
-  transition: opacity 0.2s;
-}
-
-header button:hover {
-  opacity: 0.85;
+  padding: 12px 16px;
+  margin-top: 16px;
 }
