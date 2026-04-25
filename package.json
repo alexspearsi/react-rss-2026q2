@@ -8,15 +8,15 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint --fix \"src/**/*.{ts,tsx}\"",
-    "lint:check": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint": "eslint --fix --cache \"src/**/*.{ts,tsx}\"",
+    "lint:check": "eslint --cache \"src/**/*.{ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\""
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix --cache"
     ],
     "src/**/*.css": [
       "prettier --write"

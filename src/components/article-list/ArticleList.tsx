@@ -2,13 +2,13 @@ import { Component } from 'react';
 import type { Article } from '../../types/article';
 import { ArticleCard } from '../card/ArticleCard';
 
-interface State {
+interface Props {
   articles: Article[];
   loading: boolean;
   error: string | null;
 }
 
-export class ArticleList extends Component<State> {
+export class ArticleList extends Component<Props> {
   render() {
     const { articles, loading, error } = this.props;
 

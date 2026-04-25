@@ -3,6 +3,7 @@ import type { Article, ArticlesResponse } from './types/article';
 import { fetchArticles } from './api/articles';
 import { SearchBar } from './components/search/SearchBar';
 import { ArticleList } from './components/article-list/ArticleList';
+import styles from './App.module.css';
 
 const STORAGE_KEY = 'search_query';
 
@@ -11,6 +12,7 @@ interface State {
   query: string;
   loading: boolean;
   error: string | null;
+  throwError: boolean;
 }
 class App extends Component<object, State> {
   constructor(props: object) {
@@ -21,6 +23,7 @@ class App extends Component<object, State> {
       query: localStorage.getItem(STORAGE_KEY) ?? '',
       loading: true,
       error: null,
+      throwError: false,
     };
   }
 
@@ -35,8 +38,7 @@ class App extends Component<object, State> {
       .then((data: ArticlesResponse) => {
         this.setState({ data: data.results, loading: false });
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         this.setState({
           loading: false,
           error: 'Failed to load articles. Please try again.',
@@ -60,8 +62,16 @@ class App extends Component<object, State> {
     this.setState({ query: e.target.value });
   };
 
+  showError = () => {
+    this.setState({ throwError: true });
+  };
+
   render() {
-    const { data, loading, query, error } = this.state;
+    const { data, loading, query, error, throwError } = this.state;
+
+    if (throwError) {
+      throw new Error('Test error');
+    }
 
     return (
       <>
@@ -72,6 +82,10 @@ class App extends Component<object, State> {
             onSearch={this.handleSearch}
           />
         </header>
+
+        <button className={styles.errorButton} onClick={this.showError}>
+          Error Boundary
+        </button>
 
         <main>
           <ArticleList articles={data} loading={loading} error={error} />

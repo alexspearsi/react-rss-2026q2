@@ -16,16 +16,23 @@ body {
 }
 
 header {
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   display: flex;
   gap: 8px;
-  padding: 16px 0;
+  padding: 16px;
   position: sticky;
   top: 0;
   background-color: #242424;
   z-index: 10;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 8px;
+}
+
+main {
+  width: 100%;
+  max-width: 500px;
+  padding: 0 16px 16px;
 }
 
 .error {
