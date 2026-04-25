@@ -1,75 +1,74 @@
 import { Component } from 'react';
 import type { Article, ArticlesResponse } from './types/article';
 import ArticleCard from './components/card/ArticleCard';
+import { fetchArticles } from './api/articles';
+import { SearchBar } from './components/search/SearchBar';
 
-class App extends Component {
-  state = {
-    data: [] as Article[],
-    query: '',
-    loading: true,
-  };
+const STORAGE_KEY = 'search_query';
+
+interface State {
+  data: Article[];
+  query: string;
+  loading: boolean;
+}
+class App extends Component<object, State> {
+  constructor(props: object) {
+    super(props);
+
+    this.state = {
+      data: [] as Article[],
+      query: localStorage.getItem(STORAGE_KEY) ?? '',
+      loading: true,
+    };
+  }
 
   componentDidMount(): void {
-    fetch(
-      `https://api.spaceflightnewsapi.net/v4/articles/?search=${this.state.query}`
-    )
-      .then((res) => res.json())
+    this.loadArticles();
+  }
+
+  loadArticles = () => {
+    this.setState({ loading: true });
+
+    fetchArticles(this.state.query)
       .then((data: ArticlesResponse) => {
-        this.setState({
-          data: data.results,
-          loading: false,
-        });
+        this.setState({ data: data.results, loading: false });
       })
       .catch((err) => {
         console.error(err);
         this.setState({ loading: false });
       });
-  }
-
-  inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: e.target.value });
   };
 
-  searchHandler = () => {
-    this.setState({ loading: true });
+  inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
 
-    const url = this.state.query
-      ? `https://api.spaceflightnewsapi.net/v4/articles?search=${encodeURIComponent(this.state.query)}`
-      : 'https://api.spaceflightnewsapi.net/v4/articles';
+    localStorage.setItem(STORAGE_KEY, query);
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((data: ArticlesResponse) => {
-        this.setState({ data: data.results, loading: false });
-      });
+    this.setState({ query });
   };
 
   render() {
-    const { data, loading } = this.state;
-
-    console.log(data);
+    const { data, loading, query } = this.state;
 
     return (
       <>
         <header>
-          <input
-            type="text"
-            placeholder="Search articles..."
-            value={this.state.query}
+          <SearchBar
+            value={query}
             onChange={this.inputHandler}
+            onSearch={this.loadArticles}
           />
-          <input type="submit" value="Search" onClick={this.searchHandler} />
         </header>
 
         <main>
-          {!loading ? (
+          {loading ? (
+            'Loading...'
+          ) : (
             <div className="list">
-              {this.state.data.map((article) => (
+              {data.map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))}
             </div>
-          ) : (
-            'Loading...'
           )}
         </main>
       </>

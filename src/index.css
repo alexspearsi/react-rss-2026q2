@@ -28,6 +28,12 @@ header {
   margin-bottom: 8px;
 }
 
+header form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
 header input[type='text'] {
   flex: 1;
   background: rgba(255, 255, 255, 0.06);
@@ -48,7 +54,7 @@ header input[type='text']::placeholder {
   color: rgba(255, 255, 255, 0.3);
 }
 
-header input[type='submit'] {
+header button {
   background: #e8c84a;
   border: none;
   border-radius: 8px;
@@ -60,6 +66,6 @@ header input[type='submit'] {
   transition: opacity 0.2s;
 }
 
-header input[type='submit']:hover {
+header button:hover {
   opacity: 0.85;
 }
