@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import type { Article } from '../../types/article';
-import { ArticleCard } from '../card/ArticleCard';
+import { ArticleCard } from '../article-card/ArticleCard';
+import { ArticleSkeleton } from '../skeleton/ArticleSkeleton';
 
 interface Props {
   articles: Article[];
@@ -13,7 +14,13 @@ export class ArticleList extends Component<Props> {
     const { articles, loading, error } = this.props;
 
     if (loading) {
-      return <p className="loading">Loading...</p>;
+      return (
+        <div>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <ArticleSkeleton key={index} />
+          ))}
+        </div>
+      );
     }
 
     if (error) {

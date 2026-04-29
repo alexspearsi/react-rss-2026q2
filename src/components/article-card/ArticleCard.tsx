@@ -40,6 +40,7 @@ export class ArticleCard extends Component<Props> {
           </div>
 
           <h3 className={styles.title}>{article.title}</h3>
+          <p className={styles.summary}>{article.summary}</p>
         </div>
       </a>
     );
