@@ -4,7 +4,7 @@ import styles from './ArticleSkeleton.module.css';
 export class ArticleSkeleton extends Component {
   render() {
     return (
-      <div className={styles.card}>
+      <div className={styles.card} data-testid="skeleton">
         <div className={`${styles.image} ${styles.block}`} />
 
         <div className={styles.body}>
