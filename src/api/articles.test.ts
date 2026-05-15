@@ -12,6 +12,7 @@ describe('fetchArticles', () => {
 
     expect(fetch).toHaveBeenCalledWith(
       'https://api.spaceflightnewsapi.net/v4/articles?search=NASA',
+      { signal: undefined },
     );
   });
 

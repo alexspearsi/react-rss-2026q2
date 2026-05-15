@@ -17,6 +17,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
   const [data, setData] = useState<Article[]>([]);
+  const [throwError, setThrowError] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -37,6 +38,10 @@ const App = () => {
 
     return () => controller.abort();
   }, [searchQuery]);
+
+  if (throwError) {
+    throw new Error('Error Boundary');
+  }
 
   function handleSearch() {
     const trimmed = inputValue.trim();
@@ -65,7 +70,10 @@ const App = () => {
 
       <button
         className={styles.errorButton}
-        onClick={() => setError('Error Boundary Error')}
+        onClick={() => {
+          setThrowError(true);
+          setError('Error Boundary Error');
+        }}
       >
         Error Boundary
       </button>
