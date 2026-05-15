@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import type { Article, ArticlesResponse } from './types/article';
 import { fetchArticles } from './api/articles';
 import { SearchBar } from './components/search/SearchBar';
@@ -7,47 +7,39 @@ import styles from './App.module.css';
 
 const STORAGE_KEY = 'search_query';
 
-interface State {
-  data: Article[];
-  query: string;
-  loading: boolean;
-  error: string | null;
-  throwError: boolean;
-}
-class App extends Component<object, State> {
-  constructor(props: object) {
-    super(props);
+const App = () => {
+  const [inputValue, setInputValue] = useState<string>(
+    () => localStorage.getItem(STORAGE_KEY) ?? '',
+  );
+  const [searchQuery, setSearchQuery] = useState<string>(
+    () => localStorage.getItem(STORAGE_KEY) ?? '',
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<null | string>(null);
+  const [data, setData] = useState<Article[]>([]);
 
-    this.state = {
-      data: [] as Article[],
-      query: localStorage.getItem(STORAGE_KEY) ?? '',
-      loading: true,
-      error: null,
-      throwError: false,
-    };
-  }
+  useEffect(() => {
+    const controller = new AbortController();
 
-  componentDidMount(): void {
-    this.loadArticles();
-  }
-
-  loadArticles = () => {
-    this.setState({ loading: true, error: null });
-
-    fetchArticles(this.state.query)
+    fetchArticles(searchQuery, controller.signal)
       .then((data: ArticlesResponse) => {
-        this.setState({ data: data.results, loading: false });
+        setData(data.results);
+        setIsLoading(false);
       })
-      .catch(() => {
-        this.setState({
-          loading: false,
-          error: 'Failed to load articles. Please try again.',
-        });
-      });
-  };
+      .catch((err: Error) => {
+        if (err.name === 'AbortError') {
+          return;
+        }
 
-  handleSearch = () => {
-    const trimmed = this.state.query.trim();
+        setIsLoading(false);
+        setError('Failed to load articles. Please try again.');
+      });
+
+    return () => controller.abort();
+  }, [searchQuery]);
+
+  function handleSearch() {
+    const trimmed = inputValue.trim();
     const saved = localStorage.getItem(STORAGE_KEY) ?? '';
 
     if (trimmed === saved) {
@@ -55,44 +47,34 @@ class App extends Component<object, State> {
     }
 
     localStorage.setItem(STORAGE_KEY, trimmed);
-    this.setState({ query: trimmed }, this.loadArticles);
-  };
 
-  inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: e.target.value });
-  };
-
-  showError = () => {
-    this.setState({ throwError: true });
-  };
-
-  render() {
-    const { data, loading, query, error, throwError } = this.state;
-
-    if (throwError) {
-      throw new Error('Test error');
-    }
-
-    return (
-      <>
-        <header>
-          <SearchBar
-            value={query}
-            onChange={this.inputHandler}
-            onSearch={this.handleSearch}
-          />
-        </header>
-
-        <button className={styles.errorButton} onClick={this.showError}>
-          Error Boundary
-        </button>
-
-        <main>
-          <ArticleList articles={data} loading={loading} error={error} />
-        </main>
-      </>
-    );
+    setIsLoading(true);
+    setError(null);
+    setSearchQuery(trimmed);
   }
-}
+
+  return (
+    <>
+      <header>
+        <SearchBar
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onSearch={handleSearch}
+        />
+      </header>
+
+      <button
+        className={styles.errorButton}
+        onClick={() => setError('Error Boundary Error')}
+      >
+        Error Boundary
+      </button>
+
+      <main>
+        <ArticleList articles={data} loading={isLoading} error={error} />
+      </main>
+    </>
+  );
+};
 
 export default App;
