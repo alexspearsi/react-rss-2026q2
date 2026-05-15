@@ -1,6 +1,7 @@
 import styles from './ArticleCard.module.css';
 import type { Article } from '../../types/article';
 import { formatDate } from '../../utils/format-date';
+import { NavLink } from 'react-router';
 
 interface Props {
   article: Article;
@@ -8,11 +9,11 @@ interface Props {
 
 export const ArticleCard = ({ article }: Props) => {
   return (
-    <a
-      href={article.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={styles.card}
+    <NavLink
+      to={`/articles/${article.id}`}
+      className={({ isActive }) =>
+        `${styles.card} ${isActive ? styles.cardActive : ''}`
+      }
     >
       <img
         src={article.image_url}
@@ -31,6 +32,6 @@ export const ArticleCard = ({ article }: Props) => {
         <h3 className={styles.title}>{article.title}</h3>
         <p className={styles.summary}>{article.summary}</p>
       </div>
-    </a>
+    </NavLink>
   );
 };

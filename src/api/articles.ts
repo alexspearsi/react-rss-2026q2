@@ -13,3 +13,13 @@ export async function fetchArticles(query: string, signal?: AbortSignal) {
 
   return res.json();
 }
+
+export async function fetchArticleById(id: string, signal: AbortSignal) {
+  const res = await fetch(`${BASE_URL}/${id}`, { signal });
+
+  if (!res.ok) {
+    throw new Error(`Error: ${res.status}`);
+  }
+
+  return res.json();
+}

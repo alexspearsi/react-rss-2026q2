@@ -1,3 +1,21 @@
+.layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.list {
+  flex: 0 0 500px;
+}
+
+.detail {
+  flex: 1;
+  min-width: 0;
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+}
+
 .errorButton {
   position: fixed;
   bottom: 24px;
@@ -20,4 +38,25 @@
 .errorButton:hover {
   background: rgba(255, 107, 107, 0.1);
   border-color: #ff6b6b;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .list {
+    flex: none;
+    width: 100%;
+  }
+
+  .detail {
+    width: 100%;
+    position: static;
+    top: auto;
+  }
+
+  .listHidden {
+    display: none;
+  }
 }

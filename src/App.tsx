@@ -1,83 +1,14 @@
-import { useEffect, useState } from 'react';
-import type { Article, ArticlesResponse } from './types/article';
-import { fetchArticles } from './api/articles';
-import { SearchBar } from './components/search/SearchBar';
-import { ArticleList } from './components/article-list/ArticleList';
-import styles from './App.module.css';
-import { useLocalStorage } from './hooks/useLocalStorage';
-
-const STORAGE_KEY = 'search_query';
+import { Route, Routes } from 'react-router';
+import { Layout } from './Layout';
+import { ArticleDetail } from './components/article-detail/ArticleDetail';
 
 const App = () => {
-  const [searchQuery, setSearchQuery] = useLocalStorage(STORAGE_KEY, '');
-  const [inputValue, setInputValue] = useState<string>(searchQuery);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<null | string>(null);
-  const [data, setData] = useState<Article[]>([]);
-  const [throwError, setThrowError] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetchArticles(searchQuery, controller.signal)
-      .then((data: ArticlesResponse) => {
-        setData(data.results);
-        setIsLoading(false);
-      })
-      .catch((err: Error) => {
-        if (err.name === 'AbortError') {
-          return;
-        }
-
-        setIsLoading(false);
-        setError('Failed to load articles. Please try again.');
-      });
-
-    return () => controller.abort();
-  }, [searchQuery]);
-
-  if (throwError) {
-    throw new Error('Error Boundary');
-  }
-
-  function handleSearch() {
-    const trimmed = inputValue.trim();
-
-    if (trimmed === searchQuery) {
-      return;
-    }
-
-    setError(null);
-    setIsLoading(true);
-
-    setSearchQuery(trimmed);
-  }
-
   return (
-    <>
-      <header>
-        <SearchBar
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onSearch={handleSearch}
-        />
-      </header>
-
-      <button
-        className={styles.errorButton}
-        onClick={() => {
-          setThrowError(true);
-          setError('Error Boundary Error');
-        }}
-      >
-        Error Boundary
-      </button>
-
-      <main>
-        <ArticleList articles={data} loading={isLoading} error={error} />
-      </main>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="articles/:id" element={<ArticleDetail />} />
+      </Route>
+    </Routes>
   );
 };
-
 export default App;
