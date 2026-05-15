@@ -4,16 +4,13 @@ import { fetchArticles } from './api/articles';
 import { SearchBar } from './components/search/SearchBar';
 import { ArticleList } from './components/article-list/ArticleList';
 import styles from './App.module.css';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 const STORAGE_KEY = 'search_query';
 
 const App = () => {
-  const [inputValue, setInputValue] = useState<string>(
-    () => localStorage.getItem(STORAGE_KEY) ?? '',
-  );
-  const [searchQuery, setSearchQuery] = useState<string>(
-    () => localStorage.getItem(STORAGE_KEY) ?? '',
-  );
+  const [searchQuery, setSearchQuery] = useLocalStorage(STORAGE_KEY, '');
+  const [inputValue, setInputValue] = useState<string>(searchQuery);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
   const [data, setData] = useState<Article[]>([]);
@@ -45,16 +42,14 @@ const App = () => {
 
   function handleSearch() {
     const trimmed = inputValue.trim();
-    const saved = localStorage.getItem(STORAGE_KEY) ?? '';
 
-    if (trimmed === saved) {
+    if (trimmed === searchQuery) {
       return;
     }
 
-    localStorage.setItem(STORAGE_KEY, trimmed);
-
-    setIsLoading(true);
     setError(null);
+    setIsLoading(true);
+
     setSearchQuery(trimmed);
   }
 
