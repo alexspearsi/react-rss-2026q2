@@ -6,8 +6,8 @@ interface Props {
   onSearch: () => void;
 }
 
-export function SearchBar({ value, onChange, onSearch }: Props) {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+export const SearchBar = ({ value, onChange, onSearch }: Props) => {
+  const handleSubmit = (e: React.ChangeEvent) => {
     e.preventDefault();
 
     onSearch();
@@ -27,4 +27,4 @@ export function SearchBar({ value, onChange, onSearch }: Props) {
       </button>
     </form>
   );
-}
+};
