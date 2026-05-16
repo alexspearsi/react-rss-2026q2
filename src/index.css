@@ -7,6 +7,7 @@
 body {
   background-color: #242424;
   font-family: sans-serif;
+  overflow-y: scroll;
 }
 
 #root {

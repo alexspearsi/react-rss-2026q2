@@ -5,7 +5,7 @@ import { SearchBar } from './components/search/SearchBar';
 import { ArticleList } from './components/article-list/ArticleList';
 import styles from './App.module.css';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { Outlet, useMatch, useNavigate } from 'react-router';
+import { NavLink, Outlet, useMatch, useNavigate } from 'react-router';
 
 const STORAGE_KEY = 'search_query';
 
@@ -58,23 +58,41 @@ export const Layout = () => {
 
   return (
     <>
-      <header>
+      <header className={styles.header}>
+        <nav className={styles.nav}>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+            }
+          >
+            Articles
+          </NavLink>
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+            }
+          >
+            About
+          </NavLink>
+          <button
+            className={styles.errorButton}
+            onClick={() => {
+              setThrowError(true);
+              setError('Error Boundary Error');
+            }}
+          >
+            Error Boundary
+          </button>
+        </nav>
         <SearchBar
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onSearch={handleSearch}
         />
       </header>
-
-      <button
-        className={styles.errorButton}
-        onClick={() => {
-          setThrowError(true);
-          setError('Error Boundary Error');
-        }}
-      >
-        Error Boundary
-      </button>
 
       <main className={styles.layout}>
         <div
