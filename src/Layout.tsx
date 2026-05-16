@@ -5,7 +5,7 @@ import { SearchBar } from './components/search/SearchBar';
 import { ArticleList } from './components/article-list/ArticleList';
 import styles from './App.module.css';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { Outlet, useMatch } from 'react-router';
+import { Outlet, useMatch, useNavigate } from 'react-router';
 
 const STORAGE_KEY = 'search_query';
 
@@ -18,6 +18,7 @@ export const Layout = () => {
   const [throwError, setThrowError] = useState(false);
 
   const isDetailOpen = !!useMatch('/articles/:id');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,7 +53,6 @@ export const Layout = () => {
 
     setError(null);
     setIsLoading(true);
-
     setSearchQuery(trimmed);
   }
 
@@ -78,13 +78,17 @@ export const Layout = () => {
 
       <main className={styles.layout}>
         <div
-          className={`${styles.list} ${isDetailOpen ? styles.listHidden : ''}`}
+          className={`${styles.list} ${isDetailOpen ? styles.listHidden : styles.listExpanded}`}
+          onClick={isDetailOpen ? () => navigate('/') : undefined}
         >
           <ArticleList articles={data} loading={isLoading} error={error} />
         </div>
-        <div className={styles.detail}>
-          <Outlet />
-        </div>
+
+        {isDetailOpen && (
+          <div className={styles.detail}>
+            <Outlet />
+          </div>
+        )}
       </main>
     </>
   );

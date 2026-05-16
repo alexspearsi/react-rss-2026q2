@@ -11,6 +11,7 @@ export const ArticleCard = ({ article }: Props) => {
   return (
     <NavLink
       to={`/articles/${article.id}`}
+      onClick={(e) => e.stopPropagation()}
       className={({ isActive }) =>
         `${styles.card} ${isActive ? styles.cardActive : ''}`
       }

@@ -8,6 +8,10 @@
   flex: 0 0 500px;
 }
 
+.listExpanded {
+  flex: 1;
+}
+
 .detail {
   flex: 1;
   min-width: 0;

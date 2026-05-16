@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import type { Article } from '../../types/article';
 import { fetchArticleById } from '../../api/articles';
 import { formatDate } from '../../utils/format-date';
@@ -7,6 +7,7 @@ import styles from './ArticleDetail.module.css';
 
 export const ArticleDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
@@ -49,6 +50,10 @@ export const ArticleDetail = () => {
 
   return (
     <div className={styles.panel}>
+      <button className={styles.closeButton} onClick={() => navigate('/')}>
+        x
+      </button>
+
       <img
         src={article.image_url}
         alt={article.title}
