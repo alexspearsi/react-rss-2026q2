@@ -7,6 +7,7 @@
 body {
   background-color: #242424;
   font-family: sans-serif;
+  overflow-y: scroll;
 }
 
 #root {
@@ -17,7 +18,7 @@ body {
 
 header {
   width: 100%;
-  max-width: 500px;
+  max-width: 1200px;
   display: flex;
   gap: 8px;
   padding: 16px;
@@ -30,7 +31,7 @@ header {
 
 main {
   width: 100%;
-  max-width: 500px;
+  max-width: 1200px;
   padding: 0 16px 16px;
 }
 
