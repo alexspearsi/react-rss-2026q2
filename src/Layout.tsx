@@ -59,7 +59,6 @@ export const Layout = () => {
       prev.set('page', String(page));
       return prev;
     });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   if (throwError) {

@@ -27,9 +27,12 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className={styles.container}>
           <p className={styles.message}>Something went wrong</p>
-          <a className={styles.hint} onClick={() => window.location.reload()}>
+          <button
+            className={styles.hint}
+            onClick={() => window.location.reload()}
+          >
             Click to reload the page
-          </a>
+          </button>
         </div>
       );
     }
