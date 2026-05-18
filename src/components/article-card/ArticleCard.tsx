@@ -1,16 +1,18 @@
 import styles from './ArticleCard.module.css';
 import type { Article } from '../../types/article';
 import { formatDate } from '../../utils/format-date';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 
 interface Props {
   article: Article;
 }
 
 export const ArticleCard = ({ article }: Props) => {
+  const location = useLocation();
+
   return (
     <NavLink
-      to={`/articles/${article.id}`}
+      to={`/articles/${article.id}${location.search}`}
       onClick={(e) => e.stopPropagation()}
       className={({ isActive }) =>
         `${styles.card} ${isActive ? styles.cardActive : ''}`

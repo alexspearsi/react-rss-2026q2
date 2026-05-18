@@ -1,11 +1,24 @@
 const BASE_URL = 'https://api.spaceflightnewsapi.net/v4/articles';
 
-export async function fetchArticles(query: string, signal?: AbortSignal) {
-  const url = query
-    ? `${BASE_URL}?search=${encodeURIComponent(query)}`
-    : BASE_URL;
+const PAGE_SIZE = 10;
 
-  const res = await fetch(url, { signal });
+export { PAGE_SIZE };
+
+export async function fetchArticles(
+  query: string,
+  page: number,
+  signal?: AbortSignal,
+) {
+  const params = new URLSearchParams();
+
+  if (query) {
+    params.set('search', query);
+  }
+
+  params.set('limit', String(PAGE_SIZE));
+  params.set('offset', String((page - 1) * PAGE_SIZE));
+
+  const res = await fetch(`${BASE_URL}?${params}`, { signal });
 
   if (!res.ok) {
     throw new Error(`Error: ${res.status}`);

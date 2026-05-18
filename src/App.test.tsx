@@ -4,6 +4,7 @@ import { fetchArticles } from './api/articles';
 import App from './App';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
+import { MemoryRouter } from 'react-router';
 
 vi.mock('./api/articles');
 
@@ -14,9 +15,13 @@ describe('App', () => {
   });
 
   it('calls fetchArticles', async () => {
-    vi.mocked(fetchArticles).mockResolvedValue({ results: [] });
+    vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    );
 
     await screen.findByText('Nothing found');
 
@@ -26,17 +31,25 @@ describe('App', () => {
   it('shows skeleton', async () => {
     vi.mocked(fetchArticles).mockReturnValue(new Promise(() => {}));
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    );
 
     const skeletons = screen.queryAllByTestId('skeleton');
     expect(skeletons).toHaveLength(10);
   });
 
   it('reads localstorage', async () => {
-    vi.mocked(fetchArticles).mockResolvedValue({ results: [] });
+    vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
     localStorage.setItem('search_query', 'NASA');
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByRole('textbox')).toHaveValue('NASA');
 
@@ -46,15 +59,23 @@ describe('App', () => {
   it('shows error when API fails', async () => {
     vi.mocked(fetchArticles).mockRejectedValue(new Error('Network error'));
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    );
 
     await screen.findByText('Failed to load articles. Please try again.');
   });
 
   it('saves search to localStorage on search', async () => {
-    vi.mocked(fetchArticles).mockResolvedValue({ results: [] });
+    vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
 
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    );
 
     const user = userEvent.setup();
     const input = screen.getByRole('textbox');
@@ -68,12 +89,14 @@ describe('App', () => {
 
   it('ErrorBoundary catches error', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    vi.mocked(fetchArticles).mockResolvedValue({ results: [] });
+    vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
 
     render(
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>,
+      <MemoryRouter>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </MemoryRouter>,
     );
 
     await screen.findByText('Nothing found');
@@ -90,14 +113,16 @@ describe('App', () => {
     vi.stubGlobal('location', { ...window.location, reload: reloadMock });
 
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    vi.mocked(fetchArticles).mockResolvedValue({ results: [] });
+    vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
 
     const user = userEvent.setup();
 
     render(
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>,
+      <MemoryRouter>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </MemoryRouter>,
     );
 
     await screen.findByText('Nothing found');

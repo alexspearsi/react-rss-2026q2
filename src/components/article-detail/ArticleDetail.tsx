@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import type { Article } from '../../types/article';
 import { fetchArticleById } from '../../api/articles';
 import { formatDate } from '../../utils/format-date';
+import { ArticleDetailSkeleton } from '../skeleton/ArticleDetailSkeleton';
 import styles from './ArticleDetail.module.css';
 
 export const ArticleDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const pageParam = searchParams.get('page');
+  const backUrl = pageParam ? `/?page=${pageParam}` : '/';
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
@@ -37,7 +41,7 @@ export const ArticleDetail = () => {
   }, [id]);
 
   if (isLoading) {
-    return <p className={styles.loading}>Loading...</p>;
+    return <ArticleDetailSkeleton />;
   }
 
   if (error) {
@@ -50,7 +54,7 @@ export const ArticleDetail = () => {
 
   return (
     <div className={styles.panel}>
-      <button className={styles.closeButton} onClick={() => navigate('/')}>
+      <button className={styles.closeButton} onClick={() => navigate(backUrl)}>
         x
       </button>
 

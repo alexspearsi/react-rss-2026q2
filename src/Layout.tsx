@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
 import type { Article, ArticlesResponse } from './types/article';
-import { fetchArticles } from './api/articles';
+import { fetchArticles, PAGE_SIZE } from './api/articles';
 import { SearchBar } from './components/search/SearchBar';
 import { ArticleList } from './components/article-list/ArticleList';
+import { Pagination } from './components/pagination/Pagination';
 import styles from './App.module.css';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { NavLink, Outlet, useMatch, useNavigate } from 'react-router';
+import {
+  NavLink,
+  Outlet,
+  useMatch,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 
 const STORAGE_KEY = 'search_query';
 
@@ -15,7 +22,11 @@ export const Layout = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<null | string>(null);
   const [data, setData] = useState<Article[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [throwError, setThrowError] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Math.max(1, Number(searchParams.get('page')) || 1);
 
   const isDetailOpen = !!useMatch('/articles/:id');
   const navigate = useNavigate();
@@ -23,9 +34,10 @@ export const Layout = () => {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetchArticles(searchQuery, controller.signal)
+    fetchArticles(searchQuery, currentPage, controller.signal)
       .then((data: ArticlesResponse) => {
         setData(data.results);
+        setTotalCount(data.count);
         setIsLoading(false);
       })
       .catch((err: Error) => {
@@ -38,7 +50,17 @@ export const Layout = () => {
       });
 
     return () => controller.abort();
-  }, [searchQuery]);
+  }, [searchQuery, currentPage]);
+
+  function handlePageChange(page: number) {
+    setIsLoading(true);
+    setError(null);
+    setSearchParams((prev) => {
+      prev.set('page', String(page));
+      return prev;
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   if (throwError) {
     throw new Error('Error Boundary');
@@ -53,6 +75,10 @@ export const Layout = () => {
 
     setError(null);
     setIsLoading(true);
+    setSearchParams((prev) => {
+      prev.set('page', '1');
+      return prev;
+    });
     setSearchQuery(trimmed);
   }
 
@@ -97,7 +123,9 @@ export const Layout = () => {
       <main className={styles.layout}>
         <div
           className={`${styles.list} ${isDetailOpen ? styles.listHidden : styles.listExpanded}`}
-          onClick={isDetailOpen ? () => navigate('/') : undefined}
+          onClick={
+            isDetailOpen ? () => navigate(`/?page=${currentPage}`) : undefined
+          }
         >
           <ArticleList articles={data} loading={isLoading} error={error} />
         </div>
@@ -108,6 +136,15 @@ export const Layout = () => {
           </div>
         )}
       </main>
+
+      {!isLoading && !error && (
+        <Pagination
+          currentPage={currentPage}
+          totalCount={totalCount}
+          pageSize={PAGE_SIZE}
+          onPageChange={handlePageChange}
+        />
+      )}
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { ArticleList } from './ArticleList';
+import { MemoryRouter } from 'react-router';
 import type { Article } from '../../types/article';
 
 const ERROR_STRING = 'Failed to load';
@@ -49,7 +50,11 @@ describe('ArticleList', () => {
       id: i + 1,
     }));
 
-    render(<ArticleList articles={cards} loading={false} error={null} />);
+    render(
+      <MemoryRouter>
+        <ArticleList articles={cards} loading={false} error={null} />
+      </MemoryRouter>,
+    );
 
     const skeletons = screen.queryByTestId('skeleton');
     expect(skeletons).not.toBeInTheDocument();
