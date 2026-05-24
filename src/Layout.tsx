@@ -13,6 +13,7 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router';
+import { Flyout } from './components/flyout/Flyout';
 
 const STORAGE_KEY = 'search_query';
 
@@ -144,6 +145,7 @@ export const Layout = () => {
           onPageChange={handlePageChange}
         />
       )}
+      <Flyout />
     </>
   );
 };
