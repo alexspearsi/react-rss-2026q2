@@ -21,8 +21,8 @@ export const Flyout = () => {
     ];
     const rows = items.map((item) => [
       item.id,
-      `"${item.title.replace(/"/g, '""')}`,
-      `"${item.summary.replace(/"/g, '""')}`,
+      `"${item.title.replace(/"/g, '""')}"`,
+      `"${item.summary.replace(/"/g, '""')}"`,
       item.url,
       item.news_site,
       item.published_at,
@@ -40,21 +40,24 @@ export const Flyout = () => {
   }
 
   return (
-    <div className={styles.flyout}>
-      <span className={styles.count}>
-        Selected: <strong>{items.length}</strong>
-      </span>
-      <div className={styles.actions}>
-        <button
-          onClick={() => dispatch(clearItems())}
-          className={styles.btnSecondary}
-        >
-          Unselect all
-        </button>
-        <button onClick={handleDownload} className={styles.btnPrimary}>
-          Download
-        </button>
+    <>
+      <div className={styles.spacer} aria-hidden="true" />
+      <div className={styles.flyout}>
+        <span className={styles.count}>
+          Selected: <strong>{items.length}</strong>
+        </span>
+        <div className={styles.actions}>
+          <button
+            onClick={() => dispatch(clearItems())}
+            className={styles.btnSecondary}
+          >
+            Unselect all
+          </button>
+          <button onClick={handleDownload} className={styles.btnPrimary}>
+            Download
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

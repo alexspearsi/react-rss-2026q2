@@ -14,7 +14,7 @@
   font-family: monospace;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
   text-decoration: none;
   padding: 6px 12px;
   border-radius: 6px;
@@ -22,7 +22,7 @@
 }
 
 .navLink:hover {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text);
 }
 
 .navLinkActive {
@@ -51,11 +51,27 @@
   align-self: flex-start;
 }
 
+.themeButton {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.themeButton:hover {
+  color: var(--text);
+}
+
 .errorButton {
   margin-left: auto;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
   cursor: pointer;
   font-size: 13px;
   font-family: monospace;
@@ -67,7 +83,7 @@
 }
 
 .errorButton:hover {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text);
 }
 
 @media (max-width: 768px) {
