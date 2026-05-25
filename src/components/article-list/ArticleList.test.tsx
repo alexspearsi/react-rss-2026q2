@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { ArticleList } from './ArticleList';
 import { MemoryRouter } from 'react-router';
 import type { Article } from '../../types/article';
+import { renderWithProviders } from '../../test-utils';
 
 const ERROR_STRING = 'Failed to load';
 
@@ -23,23 +24,25 @@ const MOCK_ARTICLE: Article = {
 
 describe('ArticleList', () => {
   it('renders error message', () => {
-    render(<ArticleList articles={[]} loading={false} error={ERROR_STRING} />);
+    renderWithProviders(
+      <ArticleList articles={[]} loading={false} error={ERROR_STRING} />,
+    );
 
-    const error = screen.getByText(ERROR_STRING);
-
-    expect(error).toBeInTheDocument();
+    expect(screen.getByText(ERROR_STRING)).toBeInTheDocument();
   });
 
   it('renders loading', () => {
-    render(<ArticleList articles={[]} loading={true} error={null} />);
+    renderWithProviders(
+      <ArticleList articles={[]} loading={true} error={null} />,
+    );
 
-    const skeletons = screen.getAllByTestId('skeleton');
-
-    expect(skeletons).toHaveLength(10);
+    expect(screen.getAllByTestId('skeleton')).toHaveLength(10);
   });
 
   it('renders nothing found message', () => {
-    render(<ArticleList articles={[]} loading={false} error={null} />);
+    renderWithProviders(
+      <ArticleList articles={[]} loading={false} error={null} />,
+    );
 
     expect(screen.getByText('Nothing found')).toBeInTheDocument();
   });
@@ -50,18 +53,14 @@ describe('ArticleList', () => {
       id: i + 1,
     }));
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ArticleList articles={cards} loading={false} error={null} />
       </MemoryRouter>,
     );
 
-    const skeletons = screen.queryByTestId('skeleton');
-    expect(skeletons).not.toBeInTheDocument();
-
-    const nothingFound = screen.queryByText('Nothing found');
-    expect(nothingFound).not.toBeInTheDocument();
-
+    expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument();
+    expect(screen.queryByText('Nothing found')).not.toBeInTheDocument();
     expect(screen.getAllByRole('heading')).toHaveLength(8);
   });
 });
