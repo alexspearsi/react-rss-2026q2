@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fetchArticles } from './api/articles';
 import App from './App';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import { MemoryRouter } from 'react-router';
+import { renderWithProviders } from './test-utils';
 
 vi.mock('./api/articles');
 
@@ -17,7 +18,7 @@ describe('App', () => {
   it('calls fetchArticles', async () => {
     vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <App />
       </MemoryRouter>,
@@ -31,7 +32,7 @@ describe('App', () => {
   it('shows skeleton', async () => {
     vi.mocked(fetchArticles).mockReturnValue(new Promise(() => {}));
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <App />
       </MemoryRouter>,
@@ -45,7 +46,7 @@ describe('App', () => {
     vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
     localStorage.setItem('search_query', 'NASA');
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <App />
       </MemoryRouter>,
@@ -59,7 +60,7 @@ describe('App', () => {
   it('shows error when API fails', async () => {
     vi.mocked(fetchArticles).mockRejectedValue(new Error('Network error'));
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <App />
       </MemoryRouter>,
@@ -71,7 +72,7 @@ describe('App', () => {
   it('saves search to localStorage on search', async () => {
     vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <App />
       </MemoryRouter>,
@@ -91,7 +92,7 @@ describe('App', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.mocked(fetchArticles).mockResolvedValue({ results: [], count: 0 });
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ErrorBoundary>
           <App />
@@ -117,7 +118,7 @@ describe('App', () => {
 
     const user = userEvent.setup();
 
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ErrorBoundary>
           <App />

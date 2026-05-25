@@ -1,0 +1,58 @@
+.spacer {
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.flyout {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: #1a1a2e;
+  border-top: 1px solid rgba(232, 200, 74, 0.3);
+  z-index: 100;
+}
+
+.count {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btnPrimary {
+  padding: 8px 20px;
+  background: #e8c84a;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btnPrimary:hover {
+  background: #d4b43a;
+}
+
+.btnSecondary {
+  padding: 8px 20px;
+  background: transparent;
+  color: #e8c84a;
+  border: 1px solid #e8c84a;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btnSecondary:hover {
+  background: rgba(232, 200, 74, 0.1);
+}

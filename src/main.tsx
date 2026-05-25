@@ -4,6 +4,9 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary.tsx';
 import { BrowserRouter } from 'react-router';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
+import { ThemeProvider } from './context/ThemeContext.tsx';
 
 const rootElement = document.getElementById('root');
 
@@ -13,10 +16,14 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <ErrorBoundary>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ErrorBoundary>
+    <ThemeProvider>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ErrorBoundary>
+      </Provider>
+    </ThemeProvider>
   </StrictMode>,
 );

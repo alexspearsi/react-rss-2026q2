@@ -13,6 +13,10 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router';
+import { Flyout } from './components/flyout/Flyout';
+import { useTheme } from './context/ThemeContext';
+import sunIcon from './assets/icons/sun.svg';
+import moonIcon from './assets/icons/moon.svg';
 
 const STORAGE_KEY = 'search_query';
 
@@ -24,6 +28,7 @@ export const Layout = () => {
   const [data, setData] = useState<Article[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [throwError, setThrowError] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Math.max(1, Number(searchParams.get('page')) || 1);
@@ -102,6 +107,14 @@ export const Layout = () => {
           >
             About
           </NavLink>
+          <button className={styles.themeButton} onClick={toggleTheme}>
+            <img
+              src={theme === 'dark' ? sunIcon : moonIcon}
+              alt={theme === 'dark' ? 'Switch to light' : 'Switch to dark'}
+              width={18}
+              height={18}
+            />
+          </button>
           <button
             className={styles.errorButton}
             onClick={() => {
@@ -144,6 +157,7 @@ export const Layout = () => {
           onPageChange={handlePageChange}
         />
       )}
+      <Flyout />
     </>
   );
 };

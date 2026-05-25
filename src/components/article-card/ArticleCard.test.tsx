@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { ArticleCard } from './ArticleCard';
 import type { Article } from '../../types/article';
+import { renderWithProviders } from '../../test-utils';
 
 const MOCK_ARTICLE: Article = {
   id: 1,
@@ -21,7 +22,7 @@ const MOCK_ARTICLE: Article = {
 
 describe('ArticleCard', () => {
   it('renders article title', () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ArticleCard article={MOCK_ARTICLE} />
       </MemoryRouter>,
@@ -33,7 +34,7 @@ describe('ArticleCard', () => {
   });
 
   it('renders news site name', () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ArticleCard article={MOCK_ARTICLE} />
       </MemoryRouter>,
@@ -43,7 +44,7 @@ describe('ArticleCard', () => {
   });
 
   it('renders article summary', () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ArticleCard article={MOCK_ARTICLE} />
       </MemoryRouter>,
@@ -53,7 +54,7 @@ describe('ArticleCard', () => {
   });
 
   it('renders article image with correct src and alt', () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ArticleCard article={MOCK_ARTICLE} />
       </MemoryRouter>,
@@ -64,12 +65,29 @@ describe('ArticleCard', () => {
   });
 
   it('renders link to article detail page', () => {
-    render(
+    renderWithProviders(
       <MemoryRouter>
         <ArticleCard article={MOCK_ARTICLE} />
       </MemoryRouter>,
     );
 
     expect(screen.getByRole('link')).toHaveAttribute('href', '/articles/1');
+  });
+
+  it('checkbox toggles item selection in store', () => {
+    const { store } = renderWithProviders(
+      <MemoryRouter>
+        <ArticleCard article={MOCK_ARTICLE} />
+      </MemoryRouter>,
+    );
+
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).not.toBeChecked();
+
+    fireEvent.click(checkbox);
+    expect(store.getState().selectedItems.items).toHaveLength(1);
+
+    fireEvent.click(checkbox);
+    expect(store.getState().selectedItems.items).toHaveLength(0);
   });
 });

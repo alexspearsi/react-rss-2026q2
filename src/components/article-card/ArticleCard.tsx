@@ -2,6 +2,8 @@ import styles from './ArticleCard.module.css';
 import type { Article } from '../../types/article';
 import { formatDate } from '../../utils/format-date';
 import { NavLink, useLocation } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { toggleItem } from '../../store/selectedItemsSlice';
 
 interface Props {
   article: Article;
@@ -9,6 +11,15 @@ interface Props {
 
 export const ArticleCard = ({ article }: Props) => {
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const isSelected = useAppSelector((state) =>
+    state.selectedItems.items.some((item: Article) => item.id === article.id),
+  );
+
+  function handleCheckbox(e: React.ChangeEvent<HTMLInputElement>) {
+    e.stopPropagation();
+    dispatch(toggleItem(article));
+  }
 
   return (
     <NavLink
@@ -18,6 +29,13 @@ export const ArticleCard = ({ article }: Props) => {
         `${styles.card} ${isActive ? styles.cardActive : ''}`
       }
     >
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onChange={handleCheckbox}
+        onClick={(e) => e.stopPropagation()}
+        className={styles.checkbox}
+      />
       <img
         src={article.image_url}
         alt={article.title}
