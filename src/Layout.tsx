@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import type { Article, ArticlesResponse } from './types/article';
-import { fetchArticles, PAGE_SIZE } from './api/articles';
+import { PAGE_SIZE } from './api/articles';
 import { SearchBar } from './components/search/SearchBar';
 import { ArticleList } from './components/article-list/ArticleList';
 import { Pagination } from './components/pagination/Pagination';
@@ -17,16 +15,14 @@ import { Flyout } from './components/flyout/Flyout';
 import { useTheme } from './context/ThemeContext';
 import sunIcon from './assets/icons/sun.svg';
 import moonIcon from './assets/icons/moon.svg';
+import { useGetArticlesQuery } from './store/articlesApi';
+import { useState } from 'react';
 
 const STORAGE_KEY = 'search_query';
 
 export const Layout = () => {
   const [searchQuery, setSearchQuery] = useLocalStorage(STORAGE_KEY, '');
   const [inputValue, setInputValue] = useState<string>(searchQuery);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<null | string>(null);
-  const [data, setData] = useState<Article[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(0);
   const [throwError, setThrowError] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
@@ -36,32 +32,19 @@ export const Layout = () => {
   const isDetailOpen = !!useMatch('/articles/:id');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const controller = new AbortController();
+  const { data, isLoading, isError, refetch } = useGetArticlesQuery({
+    query: searchQuery,
+    page: currentPage,
+  });
 
-    fetchArticles(searchQuery, currentPage, controller.signal)
-      .then((data: ArticlesResponse) => {
-        setData(data.results);
-        setTotalCount(data.count);
-        setIsLoading(false);
-      })
-      .catch((err: Error) => {
-        if (err.name === 'AbortError') {
-          return;
-        }
-
-        setIsLoading(false);
-        setError('Failed to load articles. Please try again.');
-      });
-
-    return () => controller.abort();
-  }, [searchQuery, currentPage]);
+  const articles = data?.results ?? [];
+  const totalCount = data?.count ?? 0;
+  const error = isError ? 'Failed to load articles. Please try again' : null;
 
   function handlePageChange(page: number) {
-    setIsLoading(true);
-    setError(null);
     setSearchParams((prev) => {
       prev.set('page', String(page));
+
       return prev;
     });
   }
@@ -77,12 +60,11 @@ export const Layout = () => {
       return;
     }
 
-    setError(null);
-    setIsLoading(true);
     setSearchParams((prev) => {
       prev.set('page', '1');
       return prev;
     });
+
     setSearchQuery(trimmed);
   }
 
@@ -117,12 +99,13 @@ export const Layout = () => {
           </button>
           <button
             className={styles.errorButton}
-            onClick={() => {
-              setThrowError(true);
-              setError('Error Boundary Error');
-            }}
+            onClick={() => setThrowError(true)}
           >
             Error Boundary
+          </button>
+          {/* ↓ Кнопка Refresh — вызывает refetch() из RTK Query */}
+          <button className={styles.refreshButton} onClick={() => refetch()}>
+            Refresh
           </button>
         </nav>
         <SearchBar
@@ -139,7 +122,7 @@ export const Layout = () => {
             isDetailOpen ? () => navigate(`/?page=${currentPage}`) : undefined
           }
         >
-          <ArticleList articles={data} loading={isLoading} error={error} />
+          <ArticleList articles={articles} loading={isLoading} error={error} />
         </div>
 
         {isDetailOpen && (
@@ -149,7 +132,7 @@ export const Layout = () => {
         )}
       </main>
 
-      {!isLoading && !error && (
+      {!isLoading && !isError && (
         <Pagination
           currentPage={currentPage}
           totalCount={totalCount}

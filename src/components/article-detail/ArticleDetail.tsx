@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import type { Article } from '../../types/article';
-import { fetchArticleById } from '../../api/articles';
+import { useGetArticleByIdQuery } from '../../store/articlesApi';
 import { formatDate } from '../../utils/format-date';
 import { ArticleDetailSkeleton } from '../skeleton/ArticleDetailSkeleton';
 import styles from './ArticleDetail.module.css';
@@ -12,40 +10,25 @@ export const ArticleDetail = () => {
   const [searchParams] = useSearchParams();
   const pageParam = searchParams.get('page');
   const backUrl = pageParam ? `/?page=${pageParam}` : '/';
-  const [article, setArticle] = useState<Article | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<null | string>(null);
 
-  useEffect(() => {
-    if (!id) {
-      return;
-    }
-
-    const controller = new AbortController();
-
-    fetchArticleById(id, controller.signal)
-      .then((data: Article) => {
-        setArticle(data);
-        setIsLoading(false);
-      })
-      .catch((err: Error) => {
-        if (err.name === 'AbortError') {
-          return;
-        }
-
-        setError('Failed to load articles.');
-        setIsLoading(false);
-      });
-
-    return () => controller.abort();
-  }, [id]);
+  const {
+    data: article,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetArticleByIdQuery(id ?? '', { skip: !id });
 
   if (isLoading) {
     return <ArticleDetailSkeleton />;
   }
 
-  if (error) {
-    return <p className={styles.error}>{error}</p>;
+  if (isError) {
+    return (
+      <div className={styles.error}>
+        <p>Failed to load article.</p>
+        <button onClick={() => refetch()}>Try again</button>
+      </div>
+    );
   }
 
   if (!article) {
@@ -56,6 +39,9 @@ export const ArticleDetail = () => {
     <div className={styles.panel}>
       <button className={styles.closeButton} onClick={() => navigate(backUrl)}>
         x
+      </button>
+      <button className={styles.refreshButton} onClick={() => refetch()}>
+        Refresh
       </button>
 
       <img
