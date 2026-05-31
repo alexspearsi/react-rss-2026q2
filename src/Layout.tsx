@@ -1,4 +1,3 @@
-import { PAGE_SIZE } from './api/articles';
 import { SearchBar } from './components/search/SearchBar';
 import { ArticleList } from './components/article-list/ArticleList';
 import { Pagination } from './components/pagination/Pagination';
@@ -15,7 +14,12 @@ import { Flyout } from './components/flyout/Flyout';
 import { useTheme } from './context/ThemeContext';
 import sunIcon from './assets/icons/sun.svg';
 import moonIcon from './assets/icons/moon.svg';
-import { useGetArticlesQuery } from './store/articlesApi';
+import {
+  PAGE_SIZE,
+  articlesApi,
+  useGetArticlesQuery,
+} from './store/articlesApi';
+import { useAppDispatch } from './store/hooks';
 import { useState } from 'react';
 
 const STORAGE_KEY = 'search_query';
@@ -32,7 +36,9 @@ export const Layout = () => {
   const isDetailOpen = !!useMatch('/articles/:id');
   const navigate = useNavigate();
 
-  const { data, isLoading, isError, refetch } = useGetArticlesQuery({
+  const dispatch = useAppDispatch();
+
+  const { data, isLoading, isError } = useGetArticlesQuery({
     query: searchQuery,
     page: currentPage,
   });
@@ -103,8 +109,12 @@ export const Layout = () => {
           >
             Error Boundary
           </button>
-          {/* ↓ Кнопка Refresh — вызывает refetch() из RTK Query */}
-          <button className={styles.refreshButton} onClick={() => refetch()}>
+          <button
+            className={styles.refreshButton}
+            onClick={() =>
+              dispatch(articlesApi.util.invalidateTags(['Articles']))
+            }
+          >
             Refresh
           </button>
         </nav>

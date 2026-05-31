@@ -1,5 +1,6 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import { useGetArticleByIdQuery } from '../../store/articlesApi';
+import { articlesApi, useGetArticleByIdQuery } from '../../store/articlesApi';
+import { useAppDispatch } from '../../store/hooks';
 import { formatDate } from '../../utils/format-date';
 import { ArticleDetailSkeleton } from '../skeleton/ArticleDetailSkeleton';
 import styles from './ArticleDetail.module.css';
@@ -10,6 +11,8 @@ export const ArticleDetail = () => {
   const [searchParams] = useSearchParams();
   const pageParam = searchParams.get('page');
   const backUrl = pageParam ? `/?page=${pageParam}` : '/';
+
+  const dispatch = useAppDispatch();
 
   const {
     data: article,
@@ -40,7 +43,16 @@ export const ArticleDetail = () => {
       <button className={styles.closeButton} onClick={() => navigate(backUrl)}>
         x
       </button>
-      <button className={styles.refreshButton} onClick={() => refetch()}>
+      <button
+        className={styles.refreshButton}
+        onClick={() =>
+          dispatch(
+            articlesApi.util.invalidateTags([
+              { type: 'Article', id: id ?? '' },
+            ]),
+          )
+        }
+      >
         Refresh
       </button>
 

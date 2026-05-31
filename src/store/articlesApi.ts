@@ -10,6 +10,7 @@ export const articlesApi = createApi({
     baseUrl: 'https://api.spaceflightnewsapi.net/v4',
   }),
   keepUnusedDataFor: CACHE_TTL,
+  tagTypes: ['Articles', 'Article'],
   endpoints: (builder) => ({
     getArticles: builder.query<
       ArticlesResponse,
@@ -27,9 +28,11 @@ export const articlesApi = createApi({
 
         return `/articles?${params}`;
       },
+      providesTags: ['Articles'],
     }),
     getArticleById: builder.query<Article, string>({
       query: (id) => `/articles/${id}`,
+      providesTags: (_result, _error, id) => [{ type: 'Article', id }],
     }),
   }),
 });
