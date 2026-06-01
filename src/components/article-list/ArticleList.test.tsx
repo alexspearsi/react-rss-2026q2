@@ -1,9 +1,12 @@
-import { screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { ArticleList } from './ArticleList';
 import { MemoryRouter } from 'react-router';
-import type { Article } from '../../types/article';
+
+import { screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+
 import { renderWithProviders } from '../../test-utils';
+import type { Article } from '../../types/article';
+
+import { ArticleList } from './ArticleList';
 
 const ERROR_STRING = 'Failed to load';
 
@@ -24,25 +27,19 @@ const MOCK_ARTICLE: Article = {
 
 describe('ArticleList', () => {
   it('renders error message', () => {
-    renderWithProviders(
-      <ArticleList articles={[]} loading={false} error={ERROR_STRING} />,
-    );
+    renderWithProviders(<ArticleList articles={[]} loading={false} error={ERROR_STRING} />);
 
     expect(screen.getByText(ERROR_STRING)).toBeInTheDocument();
   });
 
   it('renders loading', () => {
-    renderWithProviders(
-      <ArticleList articles={[]} loading={true} error={null} />,
-    );
+    renderWithProviders(<ArticleList articles={[]} loading={true} error={null} />);
 
     expect(screen.getAllByTestId('skeleton')).toHaveLength(10);
   });
 
   it('renders nothing found message', () => {
-    renderWithProviders(
-      <ArticleList articles={[]} loading={false} error={null} />,
-    );
+    renderWithProviders(<ArticleList articles={[]} loading={false} error={null} />);
 
     expect(screen.getByText('Nothing found')).toBeInTheDocument();
   });

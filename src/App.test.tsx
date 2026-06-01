@@ -1,9 +1,11 @@
-import { screen } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
-import App from './App';
-import userEvent from '@testing-library/user-event';
-import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import { MemoryRouter } from 'react-router';
+
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import App from './App';
+import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import { renderWithProviders } from './test-utils';
 
 const mockFetchSuccess = (data: unknown) => {

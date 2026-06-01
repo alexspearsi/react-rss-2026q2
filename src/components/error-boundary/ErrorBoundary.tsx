@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo } from 'react';
+
 import styles from './ErrorBoundary.module.css';
 
 interface Props {
@@ -27,10 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className={styles.container}>
           <p className={styles.message}>Something went wrong</p>
-          <button
-            className={styles.hint}
-            onClick={() => window.location.reload()}
-          >
+          <button className={styles.hint} onClick={() => window.location.reload()}>
             Click to reload the page
           </button>
         </div>

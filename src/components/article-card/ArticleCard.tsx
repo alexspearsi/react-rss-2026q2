@@ -1,9 +1,11 @@
-import styles from './ArticleCard.module.css';
-import type { Article } from '../../types/article';
-import { formatDate } from '../../utils/format-date';
 import { NavLink, useLocation } from 'react-router';
+
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleItem } from '../../store/selectedItemsSlice';
+import type { Article } from '../../types/article';
+import { formatDate } from '../../utils/format-date';
+
+import styles from './ArticleCard.module.css';
 
 interface Props {
   article: Article;
@@ -25,9 +27,7 @@ export const ArticleCard = ({ article }: Props) => {
     <NavLink
       to={`/articles/${article.id}${location.search}`}
       onClick={(e) => e.stopPropagation()}
-      className={({ isActive }) =>
-        `${styles.card} ${isActive ? styles.cardActive : ''}`
-      }
+      className={({ isActive }) => `${styles.card} ${isActive ? styles.cardActive : ''}`}
     >
       <input
         type="checkbox"
@@ -36,18 +36,12 @@ export const ArticleCard = ({ article }: Props) => {
         onClick={(e) => e.stopPropagation()}
         className={styles.checkbox}
       />
-      <img
-        src={article.image_url}
-        alt={article.title}
-        className={styles.image}
-      />
+      <img src={article.image_url} alt={article.title} className={styles.image} />
 
       <div className={styles.body}>
         <div className={styles.header}>
           <span className={styles.site}>{article.news_site}</span>
-          <span className={styles.date}>
-            {formatDate(article.published_at)}
-          </span>
+          <span className={styles.date}>{formatDate(article.published_at)}</span>
         </div>
 
         <h3 className={styles.title}>{article.title}</h3>

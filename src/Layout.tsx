@@ -1,26 +1,17 @@
-import { SearchBar } from './components/search/SearchBar';
-import { ArticleList } from './components/article-list/ArticleList';
-import { Pagination } from './components/pagination/Pagination';
-import styles from './App.module.css';
-import { useLocalStorage } from './hooks/useLocalStorage';
-import {
-  NavLink,
-  Outlet,
-  useMatch,
-  useNavigate,
-  useSearchParams,
-} from 'react-router';
-import { Flyout } from './components/flyout/Flyout';
-import { useTheme } from './context/ThemeContext';
-import sunIcon from './assets/icons/sun.svg';
-import moonIcon from './assets/icons/moon.svg';
-import {
-  PAGE_SIZE,
-  articlesApi,
-  useGetArticlesQuery,
-} from './store/articlesApi';
-import { useAppDispatch } from './store/hooks';
 import { useState } from 'react';
+import { NavLink, Outlet, useMatch, useNavigate, useSearchParams } from 'react-router';
+
+import styles from './App.module.css';
+import moonIcon from './assets/icons/moon.svg';
+import sunIcon from './assets/icons/sun.svg';
+import { ArticleList } from './components/article-list/ArticleList';
+import { Flyout } from './components/flyout/Flyout';
+import { Pagination } from './components/pagination/Pagination';
+import { SearchBar } from './components/search/SearchBar';
+import { useTheme } from './context/ThemeContext';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { PAGE_SIZE, articlesApi, useGetArticlesQuery } from './store/articlesApi';
+import { useAppDispatch } from './store/hooks';
 
 const STORAGE_KEY = 'search_query';
 
@@ -103,17 +94,12 @@ export const Layout = () => {
               height={18}
             />
           </button>
-          <button
-            className={styles.errorButton}
-            onClick={() => setThrowError(true)}
-          >
+          <button className={styles.errorButton} onClick={() => setThrowError(true)}>
             Error Boundary
           </button>
           <button
             className={styles.refreshButton}
-            onClick={() =>
-              dispatch(articlesApi.util.invalidateTags(['Articles']))
-            }
+            onClick={() => dispatch(articlesApi.util.invalidateTags(['Articles']))}
           >
             Refresh
           </button>
@@ -128,9 +114,7 @@ export const Layout = () => {
       <main className={styles.layout}>
         <div
           className={`${styles.list} ${isDetailOpen ? styles.listHidden : styles.listExpanded}`}
-          onClick={
-            isDetailOpen ? () => navigate(`/?page=${currentPage}`) : undefined
-          }
+          onClick={isDetailOpen ? () => navigate(`/?page=${currentPage}`) : undefined}
         >
           <ArticleList articles={articles} loading={isLoading} error={error} />
         </div>

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+
 import styles from './NotFoundPage.module.css';
 
 export const NotFoundPage = () => {

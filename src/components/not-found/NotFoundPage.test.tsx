@@ -1,7 +1,9 @@
+import { MemoryRouter } from 'react-router';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect } from 'vitest';
-import { MemoryRouter } from 'react-router';
+import { describe, expect, it } from 'vitest';
+
 import { NotFoundPage } from './NotFoundPage';
 
 describe('NotFoundPage', () => {
@@ -23,9 +25,7 @@ describe('NotFoundPage', () => {
       </MemoryRouter>,
     );
 
-    expect(
-      screen.getByRole('button', { name: 'back to articles' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'back to articles' })).toBeInTheDocument();
   });
 
   it('navigates on back button click without errors', async () => {

@@ -1,10 +1,13 @@
+import { MemoryRouter, Route, Routes } from 'react-router';
+
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
-import { MemoryRouter, Route, Routes } from 'react-router';
-import { ArticleDetail } from './ArticleDetail';
-import type { Article } from '../../types/article';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { renderWithProviders } from '../../test-utils';
+import type { Article } from '../../types/article';
+
+import { ArticleDetail } from './ArticleDetail';
 
 const MOCK_ARTICLE: Article = {
   id: 1,
@@ -59,9 +62,7 @@ describe('ArticleDetail', () => {
 
     renderWithRoute();
 
-    expect(
-      await screen.findByRole('heading', { name: 'Test Article Title' }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Test Article Title' })).toBeInTheDocument();
     expect(screen.getByText('Test summary text')).toBeInTheDocument();
     expect(screen.getByText('NASA')).toBeInTheDocument();
   });
@@ -86,9 +87,7 @@ describe('ArticleDetail', () => {
 
     renderWithRoute();
 
-    expect(
-      await screen.findByText('Failed to load article.'),
-    ).toBeInTheDocument();
+    expect(await screen.findByText('Failed to load article.')).toBeInTheDocument();
   });
 
   it('shows try again button on error', async () => {
@@ -96,9 +95,7 @@ describe('ArticleDetail', () => {
 
     renderWithRoute();
 
-    expect(
-      await screen.findByRole('button', { name: 'Try again' }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'Try again' })).toBeInTheDocument();
   });
 
   it('renders close button', async () => {
@@ -126,9 +123,7 @@ describe('ArticleDetail', () => {
 
     renderWithRoute();
 
-    expect(
-      await screen.findByRole('button', { name: /refresh/i }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /refresh/i })).toBeInTheDocument();
   });
 
   it('refetches data when refresh button is clicked', async () => {

@@ -1,8 +1,10 @@
-import { screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import { Flyout } from './Flyout';
-import type { Article } from '../../types/article';
+import { fireEvent, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
 import { renderWithProviders } from '../../test-utils';
+import type { Article } from '../../types/article';
+
+import { Flyout } from './Flyout';
 
 const MOCK_ARTICLE: Article = {
   id: 1,
@@ -33,12 +35,8 @@ describe('Flyout', () => {
   it('renders when at least one item is selected', () => {
     renderWithProviders(<Flyout />, { preloadedItems: [MOCK_ARTICLE] });
     expect(screen.getByText(/selected/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Unselect all' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Download' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Unselect all' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Download' })).toBeInTheDocument();
   });
 
   it('displays the correct number of selected items', () => {
@@ -92,11 +90,7 @@ describe('Flyout', () => {
       },
     );
 
-    const items = [
-      MOCK_ARTICLE,
-      { ...MOCK_ARTICLE, id: 2 },
-      { ...MOCK_ARTICLE, id: 3 },
-    ];
+    const items = [MOCK_ARTICLE, { ...MOCK_ARTICLE, id: 2 }, { ...MOCK_ARTICLE, id: 3 }];
 
     renderWithProviders(<Flyout />, { preloadedItems: items });
 

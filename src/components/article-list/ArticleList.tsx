@@ -1,6 +1,7 @@
 import type { Article } from '../../types/article';
 import { ArticleCard } from '../article-card/ArticleCard';
 import { ArticleSkeleton } from '../skeleton/ArticleSkeleton';
+
 import styles from './ArticleList.module.css';
 
 interface Props {

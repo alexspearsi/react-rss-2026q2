@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import type { Article } from '../types/article';
 
 interface SelectedItemsState {
@@ -14,9 +15,7 @@ const selectedItemsSlice = createSlice({
   initialState,
   reducers: {
     toggleItem(state, action: PayloadAction<Article>) {
-      const index = state.items.findIndex(
-        (item) => item.id === action.payload.id,
-      );
+      const index = state.items.findIndex((item) => item.id === action.payload.id);
 
       if (index === -1) {
         state.items.push(action.payload);

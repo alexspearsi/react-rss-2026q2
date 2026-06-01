@@ -32,12 +32,7 @@ function getPageRange(current: number, total: number) {
   return items;
 }
 
-export const Pagination = ({
-  currentPage,
-  totalCount,
-  pageSize,
-  onPageChange,
-}: Props) => {
+export const Pagination = ({ currentPage, totalCount, pageSize, onPageChange }: Props) => {
   const totalPages = Math.ceil(totalCount / pageSize);
 
   if (totalPages <= 1) {

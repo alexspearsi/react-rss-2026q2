@@ -1,11 +1,13 @@
-import { render, type RenderOptions } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import { ThemeProvider } from './context/ThemeContext';
-import selectedItemsReducer from './store/selectedItemsSlice';
-import { articlesApi } from './store/articlesApi';
-import type { Article } from './types/article';
 import type { ReactNode } from 'react';
+import { Provider } from 'react-redux';
+
+import { configureStore } from '@reduxjs/toolkit';
+import { type RenderOptions, render } from '@testing-library/react';
+
+import { ThemeProvider } from './context/ThemeContext';
+import { articlesApi } from './store/articlesApi';
+import selectedItemsReducer from './store/selectedItemsSlice';
+import type { Article } from './types/article';
 
 export function createTestStore(preloadedItems: Article[] = []) {
   return configureStore({
@@ -13,8 +15,7 @@ export function createTestStore(preloadedItems: Article[] = []) {
       selectedItems: selectedItemsReducer,
       [articlesApi.reducerPath]: articlesApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(articlesApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(articlesApi.middleware),
     preloadedState: { selectedItems: { items: preloadedItems } },
   });
 }

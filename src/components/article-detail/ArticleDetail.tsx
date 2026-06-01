@@ -1,8 +1,10 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router';
+
 import { articlesApi, useGetArticleByIdQuery } from '../../store/articlesApi';
 import { useAppDispatch } from '../../store/hooks';
 import { formatDate } from '../../utils/format-date';
 import { ArticleDetailSkeleton } from '../skeleton/ArticleDetailSkeleton';
+
 import styles from './ArticleDetail.module.css';
 
 export const ArticleDetail = () => {
@@ -46,39 +48,24 @@ export const ArticleDetail = () => {
       <button
         className={styles.refreshButton}
         onClick={() =>
-          dispatch(
-            articlesApi.util.invalidateTags([
-              { type: 'Article', id: id ?? '' },
-            ]),
-          )
+          dispatch(articlesApi.util.invalidateTags([{ type: 'Article', id: id ?? '' }]))
         }
       >
         Refresh
       </button>
 
-      <img
-        src={article.image_url}
-        alt={article.title}
-        className={styles.image}
-      />
+      <img src={article.image_url} alt={article.title} className={styles.image} />
 
       <div className={styles.body}>
         <div className={styles.meta}>
           <span className={styles.site}>{article.news_site}</span>
-          <span className={styles.date}>
-            {formatDate(article.published_at)}
-          </span>
+          <span className={styles.date}>{formatDate(article.published_at)}</span>
         </div>
 
         <h2 className={styles.title}>{article.title}</h2>
         <p className={styles.summary}>{article.summary}</p>
 
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.link}
-        >
+        <a href={article.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
           Read full article
         </a>
       </div>

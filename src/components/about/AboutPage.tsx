@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+
 import styles from './AboutPage.module.css';
 
 export const AboutPage = () => {
@@ -24,9 +25,7 @@ export const AboutPage = () => {
         <div className={styles.card}>
           <p className={styles.label}>Author</p>
           <h1 className={styles.name}>Alex</h1>
-          <p className={styles.bio}>
-            Developer learning React in Rolling Scopes School
-          </p>
+          <p className={styles.bio}>Developer learning React in Rolling Scopes School</p>
           <div className={styles.links}>
             <a
               href="https://github.com/alexspearsi"
