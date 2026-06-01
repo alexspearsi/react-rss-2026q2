@@ -1,6 +1,7 @@
-import { screen, fireEvent } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { render } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
 import { ThemeProvider, useTheme } from './ThemeContext';
 
 function ThemeConsumer() {
@@ -63,9 +64,7 @@ describe('ThemeContext', () => {
   it('throws when useTheme is used outside ThemeProvider', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    expect(() => render(<ThemeConsumer />)).toThrow(
-      'useTheme must be used in ThemePovider',
-    );
+    expect(() => render(<ThemeConsumer />)).toThrow('useTheme must be used in ThemePovider');
 
     vi.restoreAllMocks();
   });

@@ -1,12 +1,13 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router';
-import { ArticleDetail } from './ArticleDetail';
-import { fetchArticleById } from '../../api/articles';
+
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { renderWithProviders } from '../../test-utils';
 import type { Article } from '../../types/article';
 
-vi.mock('../../api/articles');
+import { ArticleDetail } from './ArticleDetail';
 
 const MOCK_ARTICLE: Article = {
   id: 1,
@@ -24,7 +25,7 @@ const MOCK_ARTICLE: Article = {
 };
 
 function renderWithRoute(id = '1', search = '') {
-  return render(
+  return renderWithProviders(
     <MemoryRouter initialEntries={[`/articles/${id}${search}`]}>
       <Routes>
         <Route path="/articles/:id" element={<ArticleDetail />} />
@@ -34,12 +35,16 @@ function renderWithRoute(id = '1', search = '') {
 }
 
 describe('ArticleDetail', () => {
+  beforeAll(() => {
+    vi.stubGlobal('fetch', vi.fn());
+  });
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('shows skeleton while loading', () => {
-    vi.mocked(fetchArticleById).mockReturnValue(new Promise(() => {}));
+    vi.mocked(fetch).mockReturnValue(new Promise(() => {}));
 
     renderWithRoute();
 
@@ -48,19 +53,27 @@ describe('ArticleDetail', () => {
   });
 
   it('renders article content after loading', async () => {
-    vi.mocked(fetchArticleById).mockResolvedValue(MOCK_ARTICLE);
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify(MOCK_ARTICLE), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
 
     renderWithRoute();
 
-    expect(
-      await screen.findByRole('heading', { name: 'Test Article Title' }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Test Article Title' })).toBeInTheDocument();
     expect(screen.getByText('Test summary text')).toBeInTheDocument();
     expect(screen.getByText('NASA')).toBeInTheDocument();
   });
 
   it('renders read full article link', async () => {
-    vi.mocked(fetchArticleById).mockResolvedValue(MOCK_ARTICLE);
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify(MOCK_ARTICLE), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
 
     renderWithRoute();
 
@@ -70,26 +83,92 @@ describe('ArticleDetail', () => {
   });
 
   it('shows error message when API fails', async () => {
-    vi.mocked(fetchArticleById).mockRejectedValue(new Error('Network error'));
+    vi.mocked(fetch).mockResolvedValue(new Response(null, { status: 500 }));
 
     renderWithRoute();
 
-    expect(
-      await screen.findByText('Failed to load articles.'),
-    ).toBeInTheDocument();
+    expect(await screen.findByText('Failed to load article.')).toBeInTheDocument();
   });
 
-  it('renders close button and navigates back on click', async () => {
-    const user = userEvent.setup();
+  it('shows try again button on error', async () => {
+    vi.mocked(fetch).mockResolvedValue(new Response(null, { status: 500 }));
 
-    vi.mocked(fetchArticleById).mockResolvedValue(MOCK_ARTICLE);
+    renderWithRoute();
+
+    expect(await screen.findByRole('button', { name: 'Try again' })).toBeInTheDocument();
+  });
+
+  it('renders close button', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify(MOCK_ARTICLE), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
 
     renderWithRoute();
 
     const closeButton = await screen.findByRole('button', { name: 'x' });
 
     expect(closeButton).toBeInTheDocument();
+  });
 
-    await user.click(closeButton);
+  it('renders refresh button', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify(MOCK_ARTICLE), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    renderWithRoute();
+
+    expect(await screen.findByRole('button', { name: /refresh/i })).toBeInTheDocument();
+  });
+
+  it('refetches data when refresh button is clicked', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify(MOCK_ARTICLE), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    renderWithRoute();
+
+    await screen.findByRole('heading', { name: 'Test Article Title' });
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: /refresh/i }));
+
+    expect(fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it('caches article and does not refetch on re-render', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify(MOCK_ARTICLE), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    const { store, unmount } = renderWithRoute();
+
+    await screen.findByRole('heading', { name: 'Test Article Title' });
+
+    unmount();
+
+    renderWithProviders(
+      <MemoryRouter initialEntries={['/articles/1']}>
+        <Routes>
+          <Route path="/articles/:id" element={<ArticleDetail />} />
+        </Routes>
+      </MemoryRouter>,
+      { store },
+    );
+
+    await screen.findByRole('heading', { name: 'Test Article Title' });
+
+    expect(fetch).toHaveBeenCalledTimes(1);
   });
 });

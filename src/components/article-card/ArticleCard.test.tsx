@@ -1,9 +1,12 @@
-import { screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
 import { MemoryRouter } from 'react-router';
-import { ArticleCard } from './ArticleCard';
-import type { Article } from '../../types/article';
+
+import { fireEvent, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+
 import { renderWithProviders } from '../../test-utils';
+import type { Article } from '../../types/article';
+
+import { ArticleCard } from './ArticleCard';
 
 const MOCK_ARTICLE: Article = {
   id: 1,
@@ -28,9 +31,7 @@ describe('ArticleCard', () => {
       </MemoryRouter>,
     );
 
-    expect(
-      screen.getByRole('heading', { name: 'Test Article Title' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Test Article Title' })).toBeInTheDocument();
   });
 
   it('renders news site name', () => {

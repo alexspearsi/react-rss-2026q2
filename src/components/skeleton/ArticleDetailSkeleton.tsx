@@ -28,10 +28,7 @@ export const ArticleDetailSkeleton = () => {
           <div className={styles.block} style={{ width: '60%', height: 14 }} />
         </div>
 
-        <div
-          className={styles.block}
-          style={{ width: 140, height: 36, borderRadius: 6 }}
-        />
+        <div className={styles.block} style={{ width: 140, height: 36, borderRadius: 6 }} />
       </div>
     </div>
   );

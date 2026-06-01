@@ -86,6 +86,27 @@
   color: var(--text);
 }
 
+.refreshButton {
+  background: transparent;
+  border: 1px solid rgba(232, 200, 74, 0.4);
+  color: #e8c84a;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.refreshButton:hover {
+  background: rgba(232, 200, 74, 0.1);
+  border-color: #e8c84a;
+}
+
 @media (max-width: 768px) {
   .layout {
     flex-direction: column;

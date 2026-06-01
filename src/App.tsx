@@ -1,8 +1,9 @@
 import { Route, Routes, useParams } from 'react-router';
+
 import { Layout } from './Layout';
+import { AboutPage } from './components/about/AboutPage';
 import { ArticleDetail } from './components/article-detail/ArticleDetail';
 import { NotFoundPage } from './components/not-found/NotFoundPage';
-import { AboutPage } from './components/about/AboutPage';
 
 const ArticleDetailRoute = () => {
   const { id } = useParams();

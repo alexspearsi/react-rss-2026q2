@@ -1,6 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import reducer, { toggleItem, clearItems } from './selectedItemsSlice';
+import { describe, expect, it } from 'vitest';
+
 import type { Article } from '../types/article';
+
+import reducer, { clearItems, toggleItem } from './selectedItemsSlice';
 
 const MOCK_ARTICLE: Article = {
   id: 1,
@@ -39,10 +41,7 @@ describe('selectedItemsSlice', () => {
   it('toggleItem does not affect other items', () => {
     const second = { ...MOCK_ARTICLE, id: 2 };
 
-    const withTwo = reducer(
-      reducer(undefined, toggleItem(MOCK_ARTICLE)),
-      toggleItem(second),
-    );
+    const withTwo = reducer(reducer(undefined, toggleItem(MOCK_ARTICLE)), toggleItem(second));
 
     const state = reducer(withTwo, toggleItem(MOCK_ARTICLE));
 
@@ -51,10 +50,7 @@ describe('selectedItemsSlice', () => {
   });
 
   it('clearItems empties the selection', () => {
-    const withItems = reducer(
-      { items: [MOCK_ARTICLE, { ...MOCK_ARTICLE, id: 2 }] },
-      clearItems(),
-    );
+    const withItems = reducer({ items: [MOCK_ARTICLE, { ...MOCK_ARTICLE, id: 2 }] }, clearItems());
 
     expect(withItems.items).toHaveLength(0);
   });

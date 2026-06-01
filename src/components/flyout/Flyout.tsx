@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { clearItems } from '../../store/selectedItemsSlice';
+
 import styles from './Flyout.module.css';
 
 export const Flyout = () => {
@@ -11,14 +12,7 @@ export const Flyout = () => {
   }
 
   function handleDownload() {
-    const header = [
-      'id',
-      'title',
-      'summary',
-      'url',
-      'news_site',
-      'published_at',
-    ];
+    const header = ['id', 'title', 'summary', 'url', 'news_site', 'published_at'];
     const rows = items.map((item) => [
       item.id,
       `"${item.title.replace(/"/g, '""')}"`,
@@ -47,10 +41,7 @@ export const Flyout = () => {
           Selected: <strong>{items.length}</strong>
         </span>
         <div className={styles.actions}>
-          <button
-            onClick={() => dispatch(clearItems())}
-            className={styles.btnSecondary}
-          >
+          <button onClick={() => dispatch(clearItems())} className={styles.btnSecondary}>
             Unselect all
           </button>
           <button onClick={handleDownload} className={styles.btnPrimary}>

@@ -1,12 +1,13 @@
-import './index.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router';
+
 import App from './App.tsx';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary.tsx';
-import { BrowserRouter } from 'react-router';
-import { Provider } from 'react-redux';
-import { store } from './store/store.ts';
 import { ThemeProvider } from './context/ThemeContext.tsx';
+import './index.css';
+import { store } from './store/store.ts';
 
 const rootElement = document.getElementById('root');
 

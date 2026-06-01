@@ -1,31 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
 import { Pagination } from './Pagination';
 
 describe('Pagination', () => {
   it('renders nothing when total pages is 1 or less', () => {
     const { container } = render(
-      <Pagination
-        currentPage={1}
-        totalCount={5}
-        pageSize={10}
-        onPageChange={vi.fn()}
-      />,
+      <Pagination currentPage={1} totalCount={5} pageSize={10} onPageChange={vi.fn()} />,
     );
 
     expect(container).toBeEmptyDOMElement();
   });
 
   it('renders page buttons', () => {
-    render(
-      <Pagination
-        currentPage={1}
-        totalCount={30}
-        pageSize={10}
-        onPageChange={vi.fn()}
-      />,
-    );
+    render(<Pagination currentPage={1} totalCount={30} pageSize={10} onPageChange={vi.fn()} />);
 
     expect(screen.getByRole('button', { name: '1' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '2' })).toBeInTheDocument();
@@ -33,27 +22,13 @@ describe('Pagination', () => {
   });
 
   it('disables prev button on first page', () => {
-    render(
-      <Pagination
-        currentPage={1}
-        totalCount={30}
-        pageSize={10}
-        onPageChange={vi.fn()}
-      />,
-    );
+    render(<Pagination currentPage={1} totalCount={30} pageSize={10} onPageChange={vi.fn()} />);
 
     expect(screen.getByRole('button', { name: '←' })).toBeDisabled();
   });
 
   it('disables next button on last page', () => {
-    render(
-      <Pagination
-        currentPage={3}
-        totalCount={30}
-        pageSize={10}
-        onPageChange={vi.fn()}
-      />,
-    );
+    render(<Pagination currentPage={3} totalCount={30} pageSize={10} onPageChange={vi.fn()} />);
 
     expect(screen.getByRole('button', { name: '→' })).toBeDisabled();
   });
@@ -63,12 +38,7 @@ describe('Pagination', () => {
     const onPageChange = vi.fn();
 
     render(
-      <Pagination
-        currentPage={1}
-        totalCount={30}
-        pageSize={10}
-        onPageChange={onPageChange}
-      />,
+      <Pagination currentPage={1} totalCount={30} pageSize={10} onPageChange={onPageChange} />,
     );
 
     await user.click(screen.getByRole('button', { name: '→' }));
@@ -81,12 +51,7 @@ describe('Pagination', () => {
     const onPageChange = vi.fn();
 
     render(
-      <Pagination
-        currentPage={2}
-        totalCount={30}
-        pageSize={10}
-        onPageChange={onPageChange}
-      />,
+      <Pagination currentPage={2} totalCount={30} pageSize={10} onPageChange={onPageChange} />,
     );
 
     await user.click(screen.getByRole('button', { name: '←' }));
@@ -99,12 +64,7 @@ describe('Pagination', () => {
     const onPageChange = vi.fn();
 
     render(
-      <Pagination
-        currentPage={1}
-        totalCount={30}
-        pageSize={10}
-        onPageChange={onPageChange}
-      />,
+      <Pagination currentPage={1} totalCount={30} pageSize={10} onPageChange={onPageChange} />,
     );
 
     await user.click(screen.getByRole('button', { name: '2' }));
@@ -113,14 +73,7 @@ describe('Pagination', () => {
   });
 
   it('shows ellipsis for many pages', () => {
-    render(
-      <Pagination
-        currentPage={5}
-        totalCount={100}
-        pageSize={10}
-        onPageChange={vi.fn()}
-      />,
-    );
+    render(<Pagination currentPage={5} totalCount={100} pageSize={10} onPageChange={vi.fn()} />);
 
     expect(screen.getAllByText('…').length).toBeGreaterThan(0);
   });

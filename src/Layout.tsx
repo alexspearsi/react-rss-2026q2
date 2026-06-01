@@ -1,32 +1,23 @@
-import { useEffect, useState } from 'react';
-import type { Article, ArticlesResponse } from './types/article';
-import { fetchArticles, PAGE_SIZE } from './api/articles';
-import { SearchBar } from './components/search/SearchBar';
-import { ArticleList } from './components/article-list/ArticleList';
-import { Pagination } from './components/pagination/Pagination';
+import { useState } from 'react';
+import { NavLink, Outlet, useMatch, useNavigate, useSearchParams } from 'react-router';
+
 import styles from './App.module.css';
-import { useLocalStorage } from './hooks/useLocalStorage';
-import {
-  NavLink,
-  Outlet,
-  useMatch,
-  useNavigate,
-  useSearchParams,
-} from 'react-router';
-import { Flyout } from './components/flyout/Flyout';
-import { useTheme } from './context/ThemeContext';
-import sunIcon from './assets/icons/sun.svg';
 import moonIcon from './assets/icons/moon.svg';
+import sunIcon from './assets/icons/sun.svg';
+import { ArticleList } from './components/article-list/ArticleList';
+import { Flyout } from './components/flyout/Flyout';
+import { Pagination } from './components/pagination/Pagination';
+import { SearchBar } from './components/search/SearchBar';
+import { useTheme } from './context/ThemeContext';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { PAGE_SIZE, articlesApi, useGetArticlesQuery } from './store/articlesApi';
+import { useAppDispatch } from './store/hooks';
 
 const STORAGE_KEY = 'search_query';
 
 export const Layout = () => {
   const [searchQuery, setSearchQuery] = useLocalStorage(STORAGE_KEY, '');
   const [inputValue, setInputValue] = useState<string>(searchQuery);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<null | string>(null);
-  const [data, setData] = useState<Article[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(0);
   const [throwError, setThrowError] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
@@ -36,32 +27,21 @@ export const Layout = () => {
   const isDetailOpen = !!useMatch('/articles/:id');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const controller = new AbortController();
+  const dispatch = useAppDispatch();
 
-    fetchArticles(searchQuery, currentPage, controller.signal)
-      .then((data: ArticlesResponse) => {
-        setData(data.results);
-        setTotalCount(data.count);
-        setIsLoading(false);
-      })
-      .catch((err: Error) => {
-        if (err.name === 'AbortError') {
-          return;
-        }
+  const { data, isLoading, isError } = useGetArticlesQuery({
+    query: searchQuery,
+    page: currentPage,
+  });
 
-        setIsLoading(false);
-        setError('Failed to load articles. Please try again.');
-      });
-
-    return () => controller.abort();
-  }, [searchQuery, currentPage]);
+  const articles = data?.results ?? [];
+  const totalCount = data?.count ?? 0;
+  const error = isError ? 'Failed to load articles. Please try again' : null;
 
   function handlePageChange(page: number) {
-    setIsLoading(true);
-    setError(null);
     setSearchParams((prev) => {
       prev.set('page', String(page));
+
       return prev;
     });
   }
@@ -77,12 +57,11 @@ export const Layout = () => {
       return;
     }
 
-    setError(null);
-    setIsLoading(true);
     setSearchParams((prev) => {
       prev.set('page', '1');
       return prev;
     });
+
     setSearchQuery(trimmed);
   }
 
@@ -115,14 +94,14 @@ export const Layout = () => {
               height={18}
             />
           </button>
-          <button
-            className={styles.errorButton}
-            onClick={() => {
-              setThrowError(true);
-              setError('Error Boundary Error');
-            }}
-          >
+          <button className={styles.errorButton} onClick={() => setThrowError(true)}>
             Error Boundary
+          </button>
+          <button
+            className={styles.refreshButton}
+            onClick={() => dispatch(articlesApi.util.invalidateTags(['Articles']))}
+          >
+            Refresh
           </button>
         </nav>
         <SearchBar
@@ -135,11 +114,9 @@ export const Layout = () => {
       <main className={styles.layout}>
         <div
           className={`${styles.list} ${isDetailOpen ? styles.listHidden : styles.listExpanded}`}
-          onClick={
-            isDetailOpen ? () => navigate(`/?page=${currentPage}`) : undefined
-          }
+          onClick={isDetailOpen ? () => navigate(`/?page=${currentPage}`) : undefined}
         >
-          <ArticleList articles={data} loading={isLoading} error={error} />
+          <ArticleList articles={articles} loading={isLoading} error={error} />
         </div>
 
         {isDetailOpen && (
@@ -149,7 +126,7 @@ export const Layout = () => {
         )}
       </main>
 
-      {!isLoading && !error && (
+      {!isLoading && !isError && (
         <Pagination
           currentPage={currentPage}
           totalCount={totalCount}

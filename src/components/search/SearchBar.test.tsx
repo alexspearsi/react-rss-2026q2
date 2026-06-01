@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
+
 import { SearchBar } from './SearchBar';
-import { describe, it, expect, vi } from 'vitest';
 
 describe('SearchBar', () => {
   it('renders input and search button', () => {
@@ -37,9 +38,7 @@ describe('SearchBar', () => {
   });
 
   it('displays the passed value in input', () => {
-    render(
-      <SearchBar value="hello world" onChange={vi.fn()} onSearch={vi.fn()} />,
-    );
+    render(<SearchBar value="hello world" onChange={vi.fn()} onSearch={vi.fn()} />);
 
     expect(screen.getByRole('textbox')).toHaveValue('hello world');
   });

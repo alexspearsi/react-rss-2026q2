@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
 import { MemoryRouter } from 'react-router';
+
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+
 import { AboutPage } from './AboutPage';
 
 describe('AboutPage', () => {

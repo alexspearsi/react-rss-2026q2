@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import type { Article } from '../../types/article';
-import { fetchArticleById } from '../../api/articles';
+
+import { articlesApi, useGetArticleByIdQuery } from '../../store/articlesApi';
+import { useAppDispatch } from '../../store/hooks';
 import { formatDate } from '../../utils/format-date';
 import { ArticleDetailSkeleton } from '../skeleton/ArticleDetailSkeleton';
+
 import styles from './ArticleDetail.module.css';
 
 export const ArticleDetail = () => {
@@ -12,40 +13,27 @@ export const ArticleDetail = () => {
   const [searchParams] = useSearchParams();
   const pageParam = searchParams.get('page');
   const backUrl = pageParam ? `/?page=${pageParam}` : '/';
-  const [article, setArticle] = useState<Article | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<null | string>(null);
 
-  useEffect(() => {
-    if (!id) {
-      return;
-    }
+  const dispatch = useAppDispatch();
 
-    const controller = new AbortController();
-
-    fetchArticleById(id, controller.signal)
-      .then((data: Article) => {
-        setArticle(data);
-        setIsLoading(false);
-      })
-      .catch((err: Error) => {
-        if (err.name === 'AbortError') {
-          return;
-        }
-
-        setError('Failed to load articles.');
-        setIsLoading(false);
-      });
-
-    return () => controller.abort();
-  }, [id]);
+  const {
+    data: article,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetArticleByIdQuery(id ?? '', { skip: !id });
 
   if (isLoading) {
     return <ArticleDetailSkeleton />;
   }
 
-  if (error) {
-    return <p className={styles.error}>{error}</p>;
+  if (isError) {
+    return (
+      <div className={styles.error}>
+        <p>Failed to load article.</p>
+        <button onClick={() => refetch()}>Try again</button>
+      </div>
+    );
   }
 
   if (!article) {
@@ -57,30 +45,27 @@ export const ArticleDetail = () => {
       <button className={styles.closeButton} onClick={() => navigate(backUrl)}>
         x
       </button>
+      <button
+        className={styles.refreshButton}
+        onClick={() =>
+          dispatch(articlesApi.util.invalidateTags([{ type: 'Article', id: id ?? '' }]))
+        }
+      >
+        Refresh
+      </button>
 
-      <img
-        src={article.image_url}
-        alt={article.title}
-        className={styles.image}
-      />
+      <img src={article.image_url} alt={article.title} className={styles.image} />
 
       <div className={styles.body}>
         <div className={styles.meta}>
           <span className={styles.site}>{article.news_site}</span>
-          <span className={styles.date}>
-            {formatDate(article.published_at)}
-          </span>
+          <span className={styles.date}>{formatDate(article.published_at)}</span>
         </div>
 
         <h2 className={styles.title}>{article.title}</h2>
         <p className={styles.summary}>{article.summary}</p>
 
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.link}
-        >
+        <a href={article.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
           Read full article
         </a>
       </div>
