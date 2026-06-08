@@ -1,0 +1,36 @@
+.card {
+  border: 1px solid #e5e7eb;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition:
+    border-color 0.3s,
+    background 0.3s;
+}
+
+.new {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+.image {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #e5e7eb;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.875rem;
+}
+
+.info p {
+  margin: 0;
+  color: #374151;
+}
