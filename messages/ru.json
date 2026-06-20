@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "articles": "Статьи",
+    "about": "О нас"
+  },
+  "search": {
+    "placeholder": "Поиск статей...",
+    "button": "Найти"
+  },
+  "theme": {
+    "switchToDark": "Тёмная тема",
+    "switchToLight": "Светлая тема"
+  },
+  "articles": {
+    "noResults": "Статьи не найдены",
+    "error": "Не удалось загрузить статьи. Попробуйте снова"
+  },
+  "notFound": {
+    "title": "404 — Страница не найдена",
+    "back": "Назад"
+  },
+  "about": {
+    "title": "О проекте",
+    "description": "Это агрегатор новостей о космических полётах, построенный на Next.js."
+  },
+  "flyout": {
+    "selected": "Выбрано: {count}",
+    "download": "Скачать CSV",
+    "unselect": "Снять выделение"
+  }
+}

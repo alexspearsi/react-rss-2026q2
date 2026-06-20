@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "articles": "Articles",
+    "about": "About"
+  },
+  "search": {
+    "placeholder": "Search articles...",
+    "button": "Search"
+  },
+  "theme": {
+    "switchToDark": "Switch to dark",
+    "switchToLight": "Switch to light"
+  },
+  "articles": {
+    "noResults": "No articles found",
+    "error": "Failed to load articles. Please try again"
+  },
+  "notFound": {
+    "title": "404 — Page Not Found",
+    "back": "Go back"
+  },
+  "about": {
+    "title": "About",
+    "description": "This is a space flight news aggregator built with Next.js."
+  },
+  "flyout": {
+    "selected": "{count} items selected",
+    "download": "Download CSV",
+    "unselect": "Unselect all"
+  }
+}
