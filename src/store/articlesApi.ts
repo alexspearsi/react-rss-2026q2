@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { type Article, type ArticlesResponse } from '../types/article';
 
 export const PAGE_SIZE = 10;
-const CACHE_TTL = Number(import.meta.env.VITE_CACHE_TTL ?? 60);
+const CACHE_TTL = Number(process.env.NEXT_PUBLIC_CACHE_TTL ?? 60);
 
 export const articlesApi = createApi({
   reducerPath: 'articlesApi',
