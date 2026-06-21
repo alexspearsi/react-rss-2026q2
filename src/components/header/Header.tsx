@@ -1,8 +1,8 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import { Link } from '../../../i18n/navigation';
 import moonIcon from '../../assets/icons/moon.svg';
@@ -15,22 +15,34 @@ export function Header() {
   const t = useTranslations('nav');
   const tTheme = useTranslations('theme');
   const { theme, toggleTheme } = useTheme();
-  const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
 
-  function switchLocale(next: string) {
-    const withoutLocale = pathname.replace(`/${locale}`, '') || '/';
-    router.push(`/${next}${withoutLocale}`);
+  const locale = pathname.split('/')[1] as 'en' | 'ru';
+
+  function switchLocale() {
+    const next = locale === 'en' ? 'ru' : 'en';
+    const segments = pathname.split('/');
+    
+    segments[1] = next;
+    window.location.href = segments.join('/');
   }
+
+  const isArticlesActive = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isAboutActive = pathname.startsWith(`/${locale}/about`);
 
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
-        <Link href="/" className={styles.navLink}>
+        <Link
+          href="/"
+          className={`${styles.navLink} ${isArticlesActive ? styles.navLinkActive : ''}`}
+        >
           {t('articles')}
         </Link>
-        <Link href="/about" className={styles.navLink}>
+        <Link
+          href="/about"
+          className={`${styles.navLink} ${isAboutActive ? styles.navLinkActive : ''}`}
+        >
           {t('about')}
         </Link>
 
@@ -45,7 +57,7 @@ export function Header() {
 
         <button
           className={styles.langButton}
-          onClick={() => switchLocale(locale === 'en' ? 'ru' : 'en')}
+          onClick={switchLocale}
         >
           {locale === 'en' ? 'RU' : 'EN'}
         </button>

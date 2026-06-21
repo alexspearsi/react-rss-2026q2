@@ -12,7 +12,7 @@
 
 .navLink {
   font-size: 13px;
-  font-family: monospace;
+  font-family: 'Courier New', Consolas, monospace;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -26,6 +26,10 @@
   color: var(--text);
 }
 
+.navLinkActive {
+  color: #e8c84a;
+}
+
 .themeButton,
 .langButton {
   background: transparent;
@@ -37,7 +41,7 @@
   display: flex;
   align-items: center;
   font-size: 13px;
-  font-family: monospace;
+  font-family: 'Courier New', Consolas, monospace;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: color 0.2s;
