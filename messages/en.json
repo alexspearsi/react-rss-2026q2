@@ -12,16 +12,26 @@
     "switchToLight": "Switch to light"
   },
   "articles": {
-    "noResults": "No articles found",
+    "noResults": "Nothing found",
     "error": "Failed to load articles. Please try again"
+  },
+  "articleDetail": {
+    "readMore": "Read full article"
   },
   "notFound": {
     "title": "404 — Page Not Found",
     "back": "Go back"
   },
   "about": {
-    "title": "About",
-    "description": "This is a space flight news aggregator built with Next.js."
+    "label": "Author",
+    "name": "Alex",
+    "bio": "Developer learning React in Rolling Scopes School",
+    "github": "GitHub",
+    "course": "RS School React Course"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "retry": "Try again"
   },
   "flyout": {
     "selected": "{count} items selected",

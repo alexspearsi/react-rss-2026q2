@@ -12,16 +12,26 @@
     "switchToLight": "Светлая тема"
   },
   "articles": {
-    "noResults": "Статьи не найдены",
+    "noResults": "Ничего не найдено",
     "error": "Не удалось загрузить статьи. Попробуйте снова"
+  },
+  "articleDetail": {
+    "readMore": "Читать статью"
   },
   "notFound": {
     "title": "404 — Страница не найдена",
     "back": "Назад"
   },
   "about": {
-    "title": "О проекте",
-    "description": "Это агрегатор новостей о космических полётах, построенный на Next.js."
+    "label": "Автор",
+    "name": "Alex",
+    "bio": "Разработчик, изучающий React в Rolling Scopes School",
+    "github": "GitHub",
+    "course": "RS School React Course"
+  },
+  "error": {
+    "title": "Что-то пошло не так",
+    "retry": "Попробовать снова"
   },
   "flyout": {
     "selected": "Выбрано: {count}",
