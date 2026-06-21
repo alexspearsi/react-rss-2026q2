@@ -1,7 +1,13 @@
+import { useTranslations } from 'next-intl';
+import { Link } from '../../i18n/navigation';
+
 export default function NotFound() {
+  const t = useTranslations('notFound');
+
   return (
-    <div>
-      <h1>404 - Page not found</h1>
-    </div>
+    <main>
+      <h1>{t('title')}</h1>
+      <Link href="/">{t('back')}</Link>
+    </main>
   )
 }
