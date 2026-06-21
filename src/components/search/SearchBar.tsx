@@ -1,29 +1,35 @@
+'use client';
+
+import { useActionState, useState } from 'react';
+
+import { useTranslations } from 'next-intl';
+
+import { searchAction } from '../../actions/search';
+
 import styles from './SearchBar.module.css';
 
 interface Props {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSearch: () => void;
+  initialValue: string;
 }
 
-export const SearchBar = ({ value, onChange, onSearch }: Props) => {
-  const handleSubmit = (e: React.ChangeEvent) => {
-    e.preventDefault();
-
-    onSearch();
-  };
+export const SearchBar = ({ initialValue }: Props) => {
+  const [value, setValue] = useState(initialValue);
+  const [, formAction, isPending] = useActionState(searchAction, null);
+  const t = useTranslations('search');
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} action={formAction}>
       <input
         className={styles.input}
+        name="search"
         type="text"
-        placeholder="Search articles..."
+        placeholder={t('placeholder')}
         value={value}
-        onChange={onChange}
+        onChange={(e) => setValue(e.target.value)}
+        disabled={isPending}
       />
-      <button className={styles.button} type="submit">
-        Search
+      <button className={styles.button} type="submit" disabled={isPending}>
+        {t('button')}
       </button>
     </form>
   );

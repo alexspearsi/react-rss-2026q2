@@ -1,10 +1,15 @@
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { useNav } from '../../context/NavContext';
+
 import styles from './Pagination.module.css';
 
 interface Props {
   currentPage: number;
   totalCount: number;
   pageSize: number;
-  onPageChange: (page: number) => void;
 }
 
 function getPageRange(current: number, total: number) {
@@ -32,11 +37,23 @@ function getPageRange(current: number, total: number) {
   return items;
 }
 
-export const Pagination = ({ currentPage, totalCount, pageSize, onPageChange }: Props) => {
+export const Pagination = ({ currentPage, totalCount, pageSize }: Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { startNav } = useNav();
+
   const totalPages = Math.ceil(totalCount / pageSize);
 
   if (totalPages <= 1) {
     return null;
+  }
+
+  function handlePageChange(page: number) {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set('page', String(page));
+
+    startNav(() => router.push(`?${params.toString()}`));
   }
 
   const items = getPageRange(currentPage, totalPages);
@@ -46,7 +63,7 @@ export const Pagination = ({ currentPage, totalCount, pageSize, onPageChange }: 
       <button
         className={styles.btn}
         disabled={currentPage === 1}
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => handlePageChange(currentPage - 1)}
       >
         ←
       </button>
@@ -60,7 +77,7 @@ export const Pagination = ({ currentPage, totalCount, pageSize, onPageChange }: 
           <button
             key={item}
             className={`${styles.btn} ${item === currentPage ? styles.active : ''}`}
-            onClick={() => onPageChange(item)}
+            onClick={() => handlePageChange(item)}
           >
             {item}
           </button>
@@ -70,7 +87,7 @@ export const Pagination = ({ currentPage, totalCount, pageSize, onPageChange }: 
       <button
         className={styles.btn}
         disabled={currentPage === totalPages}
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => handlePageChange(currentPage + 1)}
       >
         →
       </button>
