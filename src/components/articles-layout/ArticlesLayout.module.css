@@ -1,0 +1,42 @@
+.layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.list {
+  flex: 0 0 500px;
+}
+
+.listExpanded {
+  flex: 1;
+}
+
+.detail {
+  flex: 1;
+  min-width: 0;
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+}
+
+@media (max-width: 850px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .list {
+    flex: none;
+    width: 100%;
+  }
+
+  .listWithDetail {
+    display: none;
+  }
+
+  .detail {
+    width: 100%;
+    position: static;
+    top: auto;
+  }
+}
