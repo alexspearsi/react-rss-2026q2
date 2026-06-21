@@ -6,6 +6,7 @@ import { Header } from '../../src/components/header/Header';
 import { routing } from '../../i18n/routing';
 import { ThemeProvider } from '../../src/context/ThemeContext';
 import { StoreProvider } from '../../src/store/StoreProvider';
+import { Flyout } from '../../src/components/flyout/Flyout';
 
 type Props = {
   children: React.ReactNode;
@@ -29,6 +30,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <ThemeProvider>
               <Header />
               {children}
+              <Flyout  />
             </ThemeProvider>
           </StoreProvider>
         </NextIntlClientProvider>
