@@ -7,6 +7,10 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@i18n/*": ["./i18n/*"]
+    },
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,

@@ -1,13 +1,12 @@
 'use client';
 
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { toggleItem } from '@/store/selectedItemsSlice';
+import type { Article } from '@/types/article';
+import { formatDate } from '@/utils/format-date';
+import { Link, usePathname } from '@i18n/navigation';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-
-import { Link, usePathname } from '../../../i18n/navigation';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { toggleItem } from '../../store/selectedItemsSlice';
-import type { Article } from '../../types/article';
-import { formatDate } from '../../utils/format-date';
 
 import styles from './ArticleCard.module.css';
 
@@ -33,9 +32,10 @@ export const ArticleCard = ({ article }: Props) => {
 
   params.set('article', String(article.id));
 
-  const href = pathname === '/'
-    ? `?${params.toString()}`
-    : `/articles/${article.id}?${searchParams.toString()}`;
+  const href =
+    pathname === '/'
+      ? `?${params.toString()}`
+      : `/articles/${article.id}?${searchParams.toString()}`;
 
   return (
     <Link href={href} className={styles.card}>

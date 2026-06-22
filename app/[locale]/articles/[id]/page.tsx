@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
 
-import { ArticleDetailPanel } from '../../../../src/components/article-detail/ArticleDetail';
-import { ArticlesLayout } from '../../../../src/components/articles-layout/ArticlesLayout';
-import { ArticleList } from '../../../../src/components/article-list/ArticleList';
-import { Pagination } from '../../../../src/components/pagination/Pagination';
-import { SearchBar } from '../../../../src/components/search/SearchBar';
-import { ArticleDetailSkeleton } from '../../../../src/components/skeleton/ArticleDetailSkeleton';
-import { fetchArticle, fetchArticles } from '../../../../src/lib/api';
-import { PAGE_SIZE } from '../../../../src/store/articlesApi';
+import { ArticleDetailPanel } from '@/components/article-detail/ArticleDetail';
+import { ArticlesLayout } from '@/components/articles-layout/ArticlesLayout';
+import { ArticleList } from '@/components/article-list/ArticleList';
+import { Pagination } from '@/components/pagination/Pagination';
+import { SearchBar } from '@/components/search/SearchBar';
+import { ArticleDetailSkeleton } from '@/components/skeleton/ArticleDetailSkeleton';
+import { fetchArticle, fetchArticles } from '@/lib/api';
+import { PAGE_SIZE } from '@/store/articlesApi';
 
 type Props = {
   params: Promise<{ id: string }>;

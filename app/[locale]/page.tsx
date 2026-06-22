@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
 
-import { ArticleListPending } from '../../src/components/article-list/ArticleListPending';
-import { ArticlesLayout } from '../../src/components/articles-layout/ArticlesLayout';
-import { ArticleList } from '../../src/components/article-list/ArticleList';
-import { ArticleDetailPanel } from '../../src/components/article-detail/ArticleDetail';
-import { ArticleDetailSkeleton } from '../../src/components/skeleton/ArticleDetailSkeleton';
-import { Pagination } from '../../src/components/pagination/Pagination';
-import { SearchBar } from '../../src/components/search/SearchBar';
-import { NavProvider } from '../../src/context/NavContext';
-import { fetchArticle, fetchArticles } from '../../src/lib/api';
-import { PAGE_SIZE } from '../../src/store/articlesApi';
+import { ArticleListPending } from '@/components/article-list/ArticleListPending';
+import { ArticlesLayout } from '@/components/articles-layout/ArticlesLayout';
+import { ArticleList } from '@/components/article-list/ArticleList';
+import { ArticleDetailPanel } from '@/components/article-detail/ArticleDetail';
+import { ArticleDetailSkeleton } from '@/components/skeleton/ArticleDetailSkeleton';
+import { Pagination } from '@/components/pagination/Pagination';
+import { SearchBar } from '@/components/search/SearchBar';
+import { NavProvider } from '@/context/NavContext';
+import { fetchArticle, fetchArticles } from '@/lib/api';
+import { PAGE_SIZE } from '@/store/articlesApi';
 
 type Props = {
   searchParams: Promise<{ page?: string; search?: string; article?: string }>;

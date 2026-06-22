@@ -1,6 +1,7 @@
 'use client';
 
-import { useNav } from '../../context/NavContext';
+import { useNav } from '@/context/NavContext';
+
 import { ArticleSkeleton } from '../skeleton/ArticleSkeleton';
 
 type ArticlePendingProps = {

@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
-import { routing } from '../../../i18n/routing';
+import { routing } from '@i18n/routing';
 
 import styles from './about.module.css';
 

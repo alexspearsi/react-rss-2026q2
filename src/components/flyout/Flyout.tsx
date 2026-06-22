@@ -1,10 +1,9 @@
 'use client';
 
+import { downloadCsv } from '@/actions/downloadCsv';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { clearItems } from '@/store/selectedItemsSlice';
 import { useTranslations } from 'next-intl';
-
-import { downloadCsv } from '../../actions/downloadCsv';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { clearItems } from '../../store/selectedItemsSlice';
 
 import styles from './Flyout.module.css';
 

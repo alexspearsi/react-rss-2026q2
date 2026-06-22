@@ -1,9 +1,8 @@
+import type { Article } from '@/types/article';
+import { formatDate } from '@/utils/format-date';
+import { Link } from '@i18n/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-
-import { Link } from '../../../i18n/navigation';
-import type { Article } from '../../types/article';
-import { formatDate } from '../../utils/format-date';
 
 import styles from './ArticleDetail.module.css';
 

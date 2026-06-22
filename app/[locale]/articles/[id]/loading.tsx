@@ -1,5 +1,5 @@
-import { ArticleDetailSkeleton } from '../../../../src/components/skeleton/ArticleDetailSkeleton';
-import { ArticlesLayout } from '../../../../src/components/articles-layout/ArticlesLayout';
+import { ArticleDetailSkeleton } from '@/components/skeleton/ArticleDetailSkeleton';
+import { ArticlesLayout } from '@/components/articles-layout/ArticlesLayout';
 
 export default function Loading() {
   return (

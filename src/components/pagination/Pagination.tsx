@@ -1,8 +1,7 @@
 'use client';
 
+import { useNav } from '@/context/NavContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-
-import { useNav } from '../../context/NavContext';
 
 import styles from './Pagination.module.css';
 

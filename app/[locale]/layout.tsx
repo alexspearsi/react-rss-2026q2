@@ -2,11 +2,11 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
-import { Header } from '../../src/components/header/Header';
-import { routing } from '../../i18n/routing';
-import { ThemeProvider } from '../../src/context/ThemeContext';
-import { StoreProvider } from '../../src/store/StoreProvider';
-import { Flyout } from '../../src/components/flyout/Flyout';
+import { Header } from '@/components/header/Header';
+import { routing } from '@i18n/routing';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { StoreProvider } from '@/store/StoreProvider';
+import { Flyout } from '@/components/flyout/Flyout';
 
 type Props = {
   children: React.ReactNode;

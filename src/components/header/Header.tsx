@@ -1,13 +1,12 @@
 'use client';
 
+import moonIcon from '@/assets/icons/moon.svg';
+import sunIcon from '@/assets/icons/sun.svg';
+import { useTheme } from '@/context/ThemeContext';
+import { Link } from '@i18n/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-
-import { Link } from '../../../i18n/navigation';
-import moonIcon from '../../assets/icons/moon.svg';
-import sunIcon from '../../assets/icons/sun.svg';
-import { useTheme } from '../../context/ThemeContext';
 
 import styles from './Header.module.css';
 
@@ -22,7 +21,7 @@ export function Header() {
   function switchLocale() {
     const next = locale === 'en' ? 'ru' : 'en';
     const segments = pathname.split('/');
-    
+
     segments[1] = next;
     window.location.href = segments.join('/');
   }
@@ -55,10 +54,7 @@ export function Header() {
           />
         </button>
 
-        <button
-          className={styles.langButton}
-          onClick={switchLocale}
-        >
+        <button className={styles.langButton} onClick={switchLocale}>
           {locale === 'en' ? 'RU' : 'EN'}
         </button>
       </nav>

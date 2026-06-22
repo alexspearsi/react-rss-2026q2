@@ -1,6 +1,6 @@
+import type { Article } from '@/types/article';
 import { useTranslations } from 'next-intl';
 
-import type { Article } from '../../types/article';
 import { ArticleCard } from '../article-card/ArticleCard';
 import { ArticleSkeleton } from '../skeleton/ArticleSkeleton';
 

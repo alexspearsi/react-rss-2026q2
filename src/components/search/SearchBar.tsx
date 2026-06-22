@@ -2,9 +2,8 @@
 
 import { useActionState, useState } from 'react';
 
+import { searchAction } from '@/actions/search';
 import { useTranslations } from 'next-intl';
-
-import { searchAction } from '../../actions/search';
 
 import styles from './SearchBar.module.css';
 
