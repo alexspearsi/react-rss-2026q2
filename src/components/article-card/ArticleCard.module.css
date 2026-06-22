@@ -51,11 +51,10 @@
   margin-bottom: 16px;
 }
 
-.image {
+.imageWrapper {
+  position: relative;
   width: 200px;
-  object-fit: cover;
   flex-shrink: 0;
-  display: block;
 }
 
 .body {
@@ -69,7 +68,7 @@
 .site {
   font-size: 0.75em;
   letter-spacing: 0.1em;
-  font-family: monospace;
+  font-family: 'Courier New', Consolas, monospace;
   text-transform: uppercase;
   color: #e8c84a;
 }
@@ -109,10 +108,9 @@
     height: auto;
   }
 
-  .image {
+  .imageWrapper {
     width: 100%;
     aspect-ratio: 16 / 9;
-    height: auto;
   }
 
   .body {

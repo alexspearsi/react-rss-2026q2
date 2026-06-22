@@ -1,0 +1,53 @@
+.header {
+  flex-direction: column;
+  gap: 0;
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.navLink {
+  font-size: 13px;
+  font-family: 'Courier New', Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: var(--text);
+}
+
+.navLinkActive {
+  color: #e8c84a;
+}
+
+.themeButton,
+.langButton {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-family: 'Courier New', Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.themeButton:hover,
+.langButton:hover {
+  color: var(--text);
+}

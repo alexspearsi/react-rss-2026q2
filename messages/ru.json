@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "articles": "Статьи",
+    "about": "О нас"
+  },
+  "search": {
+    "placeholder": "Поиск статей...",
+    "button": "Найти"
+  },
+  "theme": {
+    "switchToDark": "Тёмная тема",
+    "switchToLight": "Светлая тема"
+  },
+  "articles": {
+    "noResults": "Ничего не найдено",
+    "error": "Не удалось загрузить статьи. Попробуйте снова"
+  },
+  "articleDetail": {
+    "readMore": "Читать статью"
+  },
+  "notFound": {
+    "title": "404 — Страница не найдена",
+    "back": "Назад"
+  },
+  "about": {
+    "label": "Автор",
+    "name": "Alex",
+    "bio": "Разработчик, изучающий React в Rolling Scopes School",
+    "github": "GitHub",
+    "course": "RS School React Course"
+  },
+  "error": {
+    "title": "Что-то пошло не так",
+    "retry": "Попробовать снова"
+  },
+  "flyout": {
+    "selected": "Выбрано: {count}",
+    "download": "Скачать CSV",
+    "unselect": "Снять выделение"
+  }
+}
