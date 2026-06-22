@@ -34,7 +34,9 @@ export default async function HomePage({ searchParams }: Props) {
 
   return (
     <main>
-      <SearchBar initialValue={query} />
+      <div className={article ? 'hideOnMobile' : undefined}>
+        <SearchBar initialValue={query} />
+      </div>
       <NavProvider>
         <ArticlesLayout
           list={
@@ -50,7 +52,9 @@ export default async function HomePage({ searchParams }: Props) {
             ) : undefined
           }
         />
-        <Pagination currentPage={currentPage} totalCount={data.count} pageSize={PAGE_SIZE} />
+        <div className={article ? 'hideOnMobile' : undefined}>
+          <Pagination currentPage={currentPage} totalCount={data.count} pageSize={PAGE_SIZE} />
+        </div>
       </NavProvider>
     </main>
   );

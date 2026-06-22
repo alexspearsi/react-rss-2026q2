@@ -25,7 +25,8 @@
     flex-direction: column;
   }
 
-  .list {
+  .list,
+  .listExpanded {
     flex: none;
     width: 100%;
   }

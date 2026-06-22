@@ -131,3 +131,32 @@
 .refreshButton:hover {
   background: rgba(0, 0, 0, 0.75);
 }
+
+.mobileBackButton {
+  display: none;
+}
+
+@media (max-width: 850px) {
+  .mobileBackButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(232, 200, 74, 0.08);
+    color: #e8c84a;
+    font-size: 20px;
+    text-decoration: none;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
+  }
+
+  .mobileBackButton:hover {
+    background: rgba(232, 200, 74, 0.18);
+    border-color: #e8c84a;
+  }
+}

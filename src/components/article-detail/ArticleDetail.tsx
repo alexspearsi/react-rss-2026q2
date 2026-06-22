@@ -38,6 +38,9 @@ export const ArticleDetailPanel = ({ article, backHref }: Props) => {
         <a href={article.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
           {t('readMore')}
         </a>
+        <Link href={backHref} className={styles.mobileBackButton} aria-label="Back to list">
+          ↓
+        </Link>
       </div>
     </div>
   );
