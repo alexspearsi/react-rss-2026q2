@@ -10,10 +10,6 @@ const nextConfig: NextConfig = {
       { protocol: 'http', hostname: '**' },
     ],
   },
-  allowedDevOrigins: ['172.30.0.1'],
-  turbopack: {
-    root: __dirname,
-  },
 };
 
 export default withNextIntl(nextConfig);
