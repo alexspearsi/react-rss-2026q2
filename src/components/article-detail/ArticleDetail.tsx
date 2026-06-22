@@ -16,8 +16,15 @@ export const ArticleDetailPanel = ({ article, backHref }: Props) => {
 
   return (
     <div className={styles.panel}>
-      <Link href={backHref} className={styles.closeButton}>
-        X
+      <Link href={backHref} className={styles.closeButton} aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path
+            d="M1 1l12 12M13 1L1 13"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+          />
+        </svg>
       </Link>
 
       <Image

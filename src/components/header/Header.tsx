@@ -3,10 +3,10 @@
 import moonIcon from '@/assets/icons/moon.svg';
 import sunIcon from '@/assets/icons/sun.svg';
 import { useTheme } from '@/context/ThemeContext';
-import { Link } from '@i18n/navigation';
-import { useTranslations } from 'next-intl';
+import { Link, usePathname, useRouter } from '@i18n/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import styles from './Header.module.css';
 
@@ -15,19 +15,19 @@ export function Header() {
   const tTheme = useTranslations('theme');
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
-
-  const locale = pathname.split('/')[1] as 'en' | 'ru';
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const locale = useLocale() as 'en' | 'ru';
 
   function switchLocale() {
     const next = locale === 'en' ? 'ru' : 'en';
-    const segments = pathname.split('/');
+    const search = searchParams.toString();
 
-    segments[1] = next;
-    window.location.href = segments.join('/');
+    router.replace(`${pathname}${search ? `?${search}` : ''}`, { locale: next });
   }
 
-  const isArticlesActive = pathname === `/${locale}` || pathname === `/${locale}/`;
-  const isAboutActive = pathname.startsWith(`/${locale}/about`);
+  const isArticlesActive = pathname === '/' || pathname === '';
+  const isAboutActive = pathname.startsWith('/about');
 
   return (
     <header className={styles.header}>

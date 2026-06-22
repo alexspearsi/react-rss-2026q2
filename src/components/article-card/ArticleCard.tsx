@@ -38,7 +38,7 @@ export const ArticleCard = ({ article }: Props) => {
       : `/articles/${article.id}?${searchParams.toString()}`;
 
   return (
-    <Link href={href} className={styles.card}>
+    <Link href={href} className={styles.card} scroll={false}>
       <input
         type="checkbox"
         checked={isSelected}
