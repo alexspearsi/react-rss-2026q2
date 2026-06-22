@@ -1,18 +1,12 @@
 import { ArticleDetailSkeleton } from '../../../../src/components/skeleton/ArticleDetailSkeleton';
 import { ArticlesLayout } from '../../../../src/components/articles-layout/ArticlesLayout';
-import { ArticleSkeleton } from '../../../../src/components/skeleton/ArticleSkeleton';
 
 export default function Loading() {
   return (
     <main>
+      <div style={{ height: 48, marginBottom: 16 }} />
       <ArticlesLayout
-        list={
-          <div>
-            {Array.from({ length: 10 }).map((_, i) => (
-              <ArticleSkeleton key={i} />
-            ))}
-          </div>
-        }
+        list={<div />}
         detail={<ArticleDetailSkeleton />}
       />
     </main>

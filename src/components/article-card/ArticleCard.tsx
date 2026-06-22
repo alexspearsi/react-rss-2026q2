@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
-import { Link } from '../../../i18n/navigation';
+import { Link, usePathname } from '../../../i18n/navigation';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleItem } from '../../store/selectedItemsSlice';
 import type { Article } from '../../types/article';
@@ -17,6 +17,7 @@ interface Props {
 
 export const ArticleCard = ({ article }: Props) => {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const isSelected = useAppSelector((state) =>
     state.selectedItems.items.some((item: Article) => item.id === article.id),
@@ -28,10 +29,16 @@ export const ArticleCard = ({ article }: Props) => {
     dispatch(toggleItem(article));
   }
 
-  const href = `/articles/${article.id}?${searchParams.toString()}`;
+  const params = new URLSearchParams(searchParams.toString());
+
+  params.set('article', String(article.id));
+
+  const href = pathname === '/'
+    ? `?${params.toString()}`
+    : `/articles/${article.id}?${searchParams.toString()}`;
 
   return (
-    <Link href={href} onClick={(e) => e.stopPropagation()} className={styles.card}>
+    <Link href={href} className={styles.card}>
       <input
         type="checkbox"
         checked={isSelected}
